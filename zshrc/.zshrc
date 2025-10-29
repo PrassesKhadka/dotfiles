@@ -1,0 +1,139 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# If you come from bash you might have to change your $PATH.
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time Oh My Zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Uncomment the following line to use case-sensitive completion.
+CASE_SENSITIVE="false"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+HYPHEN_INSENSITIVE="true"
+
+# Which plugins would you like to load?
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git zsh-autosuggestions sudo web-search copyfile jsontools zsh-syntax-highlighting vi-mode fzf)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch $(uname -m)"
+
+# Aliases
+# Set personal Aliases, overriding those provided by Oh My Zsh libs,
+# ---- Eza (better ls) -----
+alias ls="eza --icons=always"
+alias ll="eza -alh"
+alias tree="eza --tree"
+# ---- Zoxide (better cd) ----
+eval "$(zoxide init zsh)"
+alias cd="z"
+alias zz="z -"
+# ---- bat (better cat) ----
+alias cat="bat --color=always --plain --wrap character -n"
+# for nvim 
+alias vim="nvim"
+alias nv="nvim ."
+# for interactive neovim using fzf
+alias inv='nvim $(fzf)'
+# for lazydocker
+alias lzd='lazydocker'
+# for lazygit
+alias lg='lazygit'
+# alias for clear screen
+alias cls='clear'
+
+export FUNCNEST=500
+
+# for fzf
+# use fd instead of the default find
+export FZF_DEFAULT_COMMAND="fd --type f"
+export FZF_DEFAULT_OPTS='--style full --height 100% --layout=reverse --info=inline --border=rounded --margin=3% --color=dark --cycle --multi --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+export FZF_COMPLETION_TRIGGER='**'
+# fzf keybindings using ctrl+t
+# Preview file content using bat (https://github.com/sharkdp/bat)
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+# preview cmd history using ctrl+r
+# CTRL-Y to copy the command into clipboard using pbcopy
+export FZF_CTRL_R_OPTS="
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+  --color header:italic
+  --header 'Press CTRL-Y to copy command into clipboard'"
+
+# For Node.js and NVM(Node version manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# For PYTHON
+# >>> conda initialize >>>
+# # !! Contents within this block are managed by 'conda init' !!
+
+# __conda_setup="$('/home/prasses/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/home/prasses/miniconda3/etc/profile.d/conda.sh" ]; then
+#         . "/home/prasses/miniconda3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/home/prasses/miniconda3/bin:$PATH"
+#     fi
+# fi
+
+# unset __conda_setup
+# <<< conda initialize <<<
+
+# Pyenv configuration
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+
+# For JAVA
+# Adding JAVA_HOME Environment Variables manually
+export JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64
+export JAVA_FX=/usr/lib/javafx-sdk-23.0.2
+export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$JAVA_FX/lib:$PATH"
+export DATABASE_PASSWORD=""
+# SDKMAN,which manages Java-related SDKs (e.g., Gradle, Maven, Kotlin, etc.)
+# THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+# Set up fzf key bindings and fuzzy completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

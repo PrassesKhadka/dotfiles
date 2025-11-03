@@ -69,7 +69,21 @@ alias lzd='lazydocker'
 # for lazygit
 alias lg='lazygit'
 # alias for clear screen
-alias cls='clear'
+alias c='clear'
+# tmux
+alias ts='tmux switch-client -t'
+
+# Yarn commands
+alias yb="yarn build"
+alias yd="yarn dev"
+
+# Gradle commands
+alias gsa="./gradlew spotlessApply"
+alias gb="./gradlew build --refresh-dependencies"
+alias grun="./gradlew bootRun --args='--spring.profiles.active=local --server.port=8080'"
+
+# Poetry (FastAPI / Uvicorn)
+alias prun="poetry run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
 
 export FUNCNEST=500
 

@@ -9,7 +9,7 @@ return {
     cmd = { "DBUI", "DBUIToggle", "DBUIFindBuffer", "DBUIRenameBuffer" },
     init = function()
       -- Save location for DBUI configuration
-      vim.g.db_ui_save_location = "~/.config/nvim/db_ui"
+      vim.g.db_ui_save_location = "~/.local/share/nvim/db_ui"
 
       -- Keymaps
       vim.keymap.set("n", "<leader>du", ":DBUIToggle<CR>", { silent = true, noremap = true, desc = "Toggle DBUI" })

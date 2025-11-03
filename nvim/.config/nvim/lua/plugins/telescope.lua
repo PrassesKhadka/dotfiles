@@ -12,8 +12,7 @@ return {
             require('telescope').setup({
                 defaults = {
                     mappings = {
-                        i = {
-                            -- In insert mode
+                        i = { -- In insert mode
                             ["<esc>"] = require('telescope.actions').close, -- optional: ESC to close
                         },
                         n = {

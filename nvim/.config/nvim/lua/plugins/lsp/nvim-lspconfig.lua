@@ -3,15 +3,16 @@ return {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "hrsh7th/nvim-cmp",                    -- Completion framework
-            "hrsh7th/cmp-nvim-lsp",                -- LSP source for nvim-cmp
-            "hrsh7th/cmp-buffer",                  -- Buffer source for nvim-cmp
-            "hrsh7th/cmp-path",                    -- Path source for nvim-cmp
-            "L3MON4D3/LuaSnip",                    -- Snippet engine
-            "saadparwaiz1/cmp_luasnip",            -- Snippet completion
-            "rafamadriz/friendly-snippets",        -- Snippet collection
-            "hrsh7th/cmp-nvim-lsp-signature-help", -- LSP signature help source
-        },
+            "hrsh7th/nvim-cmp",                                      -- Completion framework
+            "hrsh7th/cmp-nvim-lsp",                                  -- LSP source for nvim-cmp
+            "hrsh7th/cmp-buffer",                                    -- Buffer source for nvim-cmp
+            "hrsh7th/cmp-path",                                      -- Path source for nvim-cmp
+            "L3MON4D3/LuaSnip",                                      -- Snippet engine
+            "saadparwaiz1/cmp_luasnip",                              -- Snippet completion
+            "rafamadriz/friendly-snippets",                          -- Snippet collection
+            "hrsh7th/cmp-nvim-lsp-signature-help",                   -- LSP signature help source
+            { "antosha417/nvim-lsp-file-operations", config = true } -- file manipulation operations like rename, move, and delete of files or resources that are recognized by the LSP.
+       },
         config = function()
             -- Diagnostic options with signs configured
             vim.diagnostic.config({

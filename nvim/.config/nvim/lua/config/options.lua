@@ -1,6 +1,6 @@
 vim.cmd.colorscheme("rose-pine-moon")
 vim.opt.wrap = true
-vim.opt.number = true -- enable line numbers
+vim.opt.number = true  -- enable line numbers
 vim.opt.relativenumber = true
 
 -- Set tab width to 4 spaces
@@ -17,7 +17,8 @@ vim.opt.softtabstop = 4
 
 -- Cursor settings
 vim.opt.guicursor = "n-v-c-sm-i-ci-ve:block,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor"
-vim.o.scrolloff = 10
+vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 8
 
 -- Disable format on save globally
 vim.g.autoformat = false

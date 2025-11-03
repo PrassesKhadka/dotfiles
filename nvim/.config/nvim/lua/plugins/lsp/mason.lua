@@ -13,7 +13,8 @@ return {
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
             require("mason-lspconfig").setup({
-                ensure_installed = { "lua_ls", "pyright", "ts_ls" }, -- Add more LSP servers you need
+                -- Here the names should match the config name in nvim-lspconfig/lsp repo config name
+                ensure_installed = { "lua_ls", "pyright", "ts_ls", "html", "cssls", "tailwindcss", "eslint", "rust_analyzer" }, -- Add more LSP servers you need
             })
 
             vim.lsp.config('lua_ls', {

@@ -15,6 +15,13 @@ vim.keymap.set('n', '<CR>', 'o<Esc>', { desc = "Empty line below" })
 -- Map Shift+Enter to add an empty line above and still remain in normal mode
 vim.keymap.set("n", "<S-CR>", "O<Esc>", { desc = "Empty line above" })
 
+-- In neovim Ctrl+I is also interpreted as a Tab key.
+-- To avoid override the default, this is written
+--Command	Action	Opposite
+-- Ctrl+O	Jump back in jumplist
+-- Ctrl+I	Jump forward in jumplist
+vim.keymap.set('n', '<C-i>', '<C-i>', { noremap = true })
+
 -- undo
 vim.keymap.set("i", "<C-z>", "<Esc>ua", { desc = "undo", noremap = true, silent = true })
 vim.keymap.set({ "n", "v", "x" }, "<C-z>", "u", { desc = "undo", noremap = true, silent = true })
@@ -65,92 +72,6 @@ vim.keymap.set('n', '<C-s>', ':w<CR>', { noremap = true, silent = true })
 
 -- Key mapping for Ctrl+s to save the current file in Insert mode and stay in Insert mode
 vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>a', { noremap = true, silent = true })
-
--- Open code actions with Alt-Q in normal mode
-vim.keymap.set(
-    "n",
-    "<M-q>",
-    "<cmd>lua vim.lsp.buf.code_action()<CR>",
-    { noremap = true, silent = true, desc = "Open code actions" }
-)
-
--- Open code actions with Alt-Q in insert mode (switches to normal mode first)
-vim.keymap.set(
-    "i",
-    "<M-q>",
-    "<Esc><cmd>lua vim.lsp.buf.code_action()<CR>i",
-    { noremap = true, silent = true, desc = "Open code actions" }
-)
-
--- show function signature help (normal mode)
-vim.keymap.set(
-    "n",
-    "<C-p>",
-    vim.lsp.buf.signature_help,
-    { desc = "Show function signature help", noremap = true, silent = true }
-)
-
--- show function signature_help (insert mode)
-vim.keymap.set(
-    "i",
-    "<C-p>a",
-    vim.lsp.buf.signature_help,
-    { desc = "Show function signature help", noremap = true, silent = true }
-)
-
--- Optimize imports in normal mode
-vim.keymap.set(
-    "n",
-    "<C-i>",
-    '<cmd>lua vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } } })<CR>',
-    { noremap = true, silent = true, desc = "Optimize Imports" }
-)
-
--- Optimize imports in insert mode (switches to normal mode first)
-vim.keymap.set(
-    "i",
-    "<C-i>",
-    '<Esc><cmd>lua vim.lsp.buf.code_action({ context = { only = { "source.organizeImports" } } })<CR>i',
-    { noremap = true, silent = true, desc = "Optimize Imports" }
-)
-
--- Go to declaration in normal mode with Ctrl-D
-vim.keymap.set("n", "<C-d>", function()
-    vim.lsp.buf.definition()
-end, { noremap = true, silent = true, desc = "Go to declaration" })
-
--- Go to declaration in insert mode with Ctrl-D
-vim.keymap.set("i", "<C-d>", function()
-    vim.cmd([[stopinsert]]) -- Exit insert mode
-    vim.lsp.buf.definition()
-end, { noremap = true, silent = true, desc = "Go to declaration" })
-
--- list references in normal mode
-vim.keymap.set(
-    "n",
-    "<C-e>",
-    "<cmd>Telescope lsp_references<cr>",
-    { noremap = true, silent = true, desc = "List references" }
-)
-
--- list references in insert mode
-vim.keymap.set(
-    "i",
-    "<C-e>",
-    "<Esc><cmd>Telescope lsp_references<cr>i",
-    { noremap = true, silent = true, desc = "List references" }
-)
-
--- Normal mode
-vim.keymap.set("n", "<C-n>", "<cmd>lua vim.lsp.buf.rename()<CR>", { desc = "Rename", noremap = true, silent = true })
-
--- Insert mode
-vim.keymap.set(
-    "i",
-    "<C-n>",
-    "<cmd>lua vim.cmd('stopinsert')<CR><cmd>lua vim.lsp.buf.rename()<CR><cmd>lua vim.cmd('startinsert')<CR>",
-    { desc = "Rename", noremap = true, silent = true }
-)
 
 -- select and move
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "select and move", noremap = true, silent = true })

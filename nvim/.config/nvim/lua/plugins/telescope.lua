@@ -23,6 +23,7 @@ return {
                     file_ignore_patterns = {
                         "node_modules",
                         ".git/",
+                        ".yarn",
                         "dist/",
                         ".next/",
                         ".vscode/",
@@ -42,6 +43,7 @@ return {
                         -- Exclude the following directories
                         "--glob=!**/.git/*",
                         "--glob=!**/node_modules/*",
+                        "--glob=!**/.yarn/*",
                         "--glob=!**/dist/*",
                         "--glob=!**/.next/*",
                         "--glob=!**/.vscode/*",

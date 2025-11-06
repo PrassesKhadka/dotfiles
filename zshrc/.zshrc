@@ -72,6 +72,46 @@ alias lg='lazygit'
 alias c='clear'
 # tmux
 alias ts='tmux switch-client -t'
+alias disks='echo "╓───── m o u n t . p o i n t s";echo "╙────────────────────────────────────── ─ ─ ";lsblk -a;echo "";echo "╓───── d i s k . u s a g e";echo "╙────────────────────────────────────── ─ ─ ";df -h;'
+
+alias e='$EDITOR'
+alias se='sudo $EDITOR'
+alias g="git"
+alias 'cd..'='cd ../'
+alias rmrf="rm -rf"
+alias psef="ps -ef"
+alias ZZ="exit"
+alias ga="git add"
+alias gb="git branch"
+alias gc="git clone"
+alias gcm="git commit -m"
+alias glo="git log --oneline"
+alias gco="git checkout"
+alias gcob="git checkout -b"
+alias gcs="git commit -S -m"
+alias gd="git difftool"
+alias gdc="git difftool --cached"
+alias gf="git fetch"
+alias gg="git graph"
+alias ggg="git graphgpg"
+alias gm="git merge"
+alias gp="git push"
+alias gpr="gh pr create"
+alias gr="git rebase -i"
+alias gs="git status -sb"
+alias gt="git tag"
+alias gu="git reset @ -- "
+alias gx="git reset --hard @"
+alias mkdir="mkdir -p"
+alias cp="cp -r"
+alias scp="scp -r"
+alias vimdiff="nvim -d -u ~/.config/nvim/init.vim"
+alias ag="ag --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
+alias aga="ag --hidden --color --color-line-number '0;35' --color-match '46;30' --color-path '4;36'"
+alias curlh="curl -sILX GET"
+alias curld="curl -A \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36\""
+alias curlm="curl -A \"Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) CriOS/28.0.1500.12 Mobile/10B329 Safari/8536.25\""
+alias fuck='sudo "$BASH" -c "$(history -p !!)"'
 
 # Yarn commands
 alias yb="yarn build"

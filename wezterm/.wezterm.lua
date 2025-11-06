@@ -6,7 +6,7 @@ local config = wezterm.config_builder()
 config.color_scheme = "Gruvbox Dark (Gogh)"
 
 -- Font settings
-config.font_size = 17
+config.font_size = 12
 
 -- scrollbar setup
 config.enable_scroll_bar = true        -- show scrollbar

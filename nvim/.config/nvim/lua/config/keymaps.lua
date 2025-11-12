@@ -22,6 +22,12 @@ vim.keymap.set("n", "<S-CR>", "O<Esc>", { desc = "Empty line above" })
 -- Ctrl+I	Jump forward in jumplist
 vim.keymap.set('n', '<C-i>', '<C-i>', { noremap = true })
 
+-- Map <Leader>vv to Visual Block mode
+vim.api.nvim_set_keymap('n', 'vb', '<c-v>', { noremap = true, silent = true })
+
+-- Make <C-BS> ctrl + backspace  delete previous word in insert mode
+vim.keymap.set("i", "<C-H>", "<C-W>", { noremap = true, silent = true })
+
 -- undo
 vim.keymap.set("i", "<C-z>", "<Esc>ua", { desc = "undo", noremap = true, silent = true })
 vim.keymap.set({ "n", "v", "x" }, "<C-z>", "u", { desc = "undo", noremap = true, silent = true })
@@ -90,8 +96,8 @@ vim.keymap.set('n', '<leader>bo', '<Cmd>BufferLineCloseOthers<CR>', { noremap = 
 
 -- Split management
 vim.keymap.set('n', '<leader>v', '<cmd>vsplit<CR>', { silent = true, desc = "Vertical split" })
-vim.keymap.set('n', '<leader>h', '<cmd>split<CR>',  { silent = true, desc = "Horizontal split" })
-vim.keymap.set('n', '<leader>c', '<cmd>close<CR>',  { silent = true, desc = "Close split" })
+vim.keymap.set('n', '<leader>h', '<cmd>split<CR>', { silent = true, desc = "Horizontal split" })
+vim.keymap.set('n', '<leader>c', '<cmd>close<CR>', { silent = true, desc = "Close split" })
 
 --code formatting
 -- Keymap for formatting code using LSP

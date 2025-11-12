@@ -81,6 +81,8 @@ alias 'cd..'='cd ../'
 alias rmrf="rm -rf"
 alias psef="ps -ef"
 alias ZZ="exit"
+
+# for git
 alias ga="git add"
 alias gb="git branch"
 alias gc="git clone"
@@ -124,6 +126,7 @@ alias grun="./gradlew bootRun --args='--spring.profiles.active=local --server.po
 
 # Poetry (FastAPI / Uvicorn)
 alias prun="poetry run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000"
+alias uvirun="PYTHONPATH=$(pwd) uvicorn app.main:app  --reload"
 
 export FUNCNEST=500
 

@@ -1,5 +1,5 @@
 -- <leader> value is mapped in Lazy.lua as " "(space) since lazy needs it to be initialised first
--- other keymaps are set in their respective config e.g. telescope,neotree,lazy, etc
+-- other keymaps are set in their respective config e.g. fzf,neotree,lazy,lsp etc
 
 -- Press <leader><space> to insert a space after the cursor in normal mode
 vim.keymap.set('n', '<leader><space>', 'a <Esc>', { noremap = true, silent = true })

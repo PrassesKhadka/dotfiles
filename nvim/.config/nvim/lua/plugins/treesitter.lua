@@ -51,20 +51,20 @@ return {
                     enable = true,
                     set_jumps = true, -- record movements in the jumplist
                     goto_next_start = {
-                        ["]f"] = "@function.outer",
-                        ["]c"] = "@class.outer",
+                        ["nf"] = "@function.outer",
+                        ["nc"] = "@class.outer",
                     },
                     goto_next_end = {
-                        ["]F"] = "@function.outer",
-                        ["]C"] = "@class.outer",
+                        ["nfe"] = "@function.outer",
+                        ["nce"] = "@class.outer",
                     },
                     goto_previous_start = {
-                        ["[f"] = "@function.outer",
-                        ["[c"] = "@class.outer",
+                        ["pf"] = "@function.outer",
+                        ["pc"] = "@class.outer",
                     },
                     goto_previous_end = {
-                        ["[F"] = "@function.outer",
-                        ["[C"] = "@class.outer",
+                        ["pfe"] = "@function.outer",
+                        ["pce"] = "@class.outer",
                     },
                 },
             },

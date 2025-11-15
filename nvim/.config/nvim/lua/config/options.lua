@@ -3,6 +3,11 @@ vim.opt.wrap = true
 vim.opt.number = true  -- enable line numbers
 vim.opt.relativenumber = true
 
+-- Disable swap/backup files
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.writebackup = false
+
 -- Set tab width to 4 spaces
 vim.opt.tabstop = 4
 

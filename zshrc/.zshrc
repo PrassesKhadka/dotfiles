@@ -138,7 +138,7 @@ export FZF_COMPLETION_TRIGGER='**'
 # fzf keybindings using ctrl+t
 # Preview file content using bat (https://github.com/sharkdp/bat)
 export FZF_CTRL_T_OPTS="
-  --walker-skip .git,node_modules,target
+  --walker-skip .git,node_modules,target,.yarn
   --preview 'bat -n --color=always {}'
   --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 # preview cmd history using ctrl+r

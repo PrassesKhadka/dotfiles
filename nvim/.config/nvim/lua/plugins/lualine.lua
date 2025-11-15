@@ -28,9 +28,9 @@ return {
                 },
                 lualine_y = {
                     'progress',
-                    function()
-                        return ' ' .. os.date('%H:%M') -- Adds a clock icon () next to the current time
-                    end,
+                    -- function()
+                    --     return ' ' .. os.date('%H:%M') -- Adds a clock icon () next to the current time
+                    -- end,
                 },
                 lualine_z = { 'location' },
             },

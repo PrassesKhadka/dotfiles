@@ -6,7 +6,7 @@ return {
 			-- Conform will run multiple formatters sequentially
 			python = { "isort", "black" },
 			-- You can customize some of the format options for the filetype (:help conform.format)
-			rust = { "rustfmt" },
+			rust = { "rustfmt", lsp_format = "fallback" },
 			-- Conform will run the first available formatter
 			javascript = { "prettierd", "prettier", stop_after_first = true },
 			typescript = { "prettierd", "prettier", stop_after_first = true },
@@ -17,4 +17,18 @@ return {
 			lsp_format = "fallback",
 		},
 	},
+
+	-- Add your keymaps here
+	config = function(_, opts)
+		require("conform").setup(opts)
+
+		-- Keymap for formatting
+		vim.keymap.set("n", "<leader>f", function()
+			require("conform").format({
+				lsp_format = "fallback",
+				async = false,
+				timeout_ms = 500,
+			})
+		end, { desc = "Format file with Conform" })
+	end,
 }

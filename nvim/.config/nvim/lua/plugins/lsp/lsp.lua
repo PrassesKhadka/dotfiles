@@ -229,6 +229,8 @@ return {
 		-- 1. Ensure binaries are installed using mason and mason-tool-installer and then use `conform.nvim` to use them
 		vim.list_extend(ensure_installed, {
 			"stylua", -- Used to format Lua code
+			-- For JS/TS
+			"prettier",
 			"prettierd", -- Used to format javascript and typescript code
 			-- For Python
 			"isort",

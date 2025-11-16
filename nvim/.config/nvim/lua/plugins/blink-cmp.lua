@@ -26,7 +26,7 @@ return {
 			-- (Default) Only show the documentation popup when manually triggered
 			completion = { documentation = { auto_show = false } },
 			-- Shows function signature while typing
-			signature = { enabled = true },
+			signature = { enabled = false },
 			-- Enable command line ghost completion:
 			cmdline = { completion = { ghost_text = { enabled = true } } },
 
@@ -41,12 +41,19 @@ return {
 					sql = { "snippets", "dadbod", "buffer" },
 				},
 				providers = {
+					-- Snippets → highest priority
+					snippets = {
+						name = "Snippets",
+						module = "blink.cmp.sources.snippets",
+						score_offset = 1000, -- 👈 higher score = higher priority
+					},
+
 					-- Configuring vim-dadbod-completion for blink-cmp, supports PostgreSQL, MySQL,SQLite
 					-- Out of the box integration with vim-dadbod-ui
 					dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
 
 					-- Configuring emoji-completion
-                    -- use ':', to show empji autocompletion
+					-- use ':', to show empji autocompletion
 					emoji = {
 						module = "blink-emoji",
 						name = "Emoji",

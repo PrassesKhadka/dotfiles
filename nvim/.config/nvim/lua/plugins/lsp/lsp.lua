@@ -84,7 +84,7 @@ return {
 
 		-- vim.lsp.inlay_hint.enable(true)
 
-		-- diagnostic configuration
+		-- Diagnostic Configuration
 		vim.diagnostic.config({
 			virtual_text = {
 				spacing = 4,
@@ -105,7 +105,7 @@ return {
 
 		-- 🔍 LSP diagnostics navigation keymaps
 		-- "fd" -> to find diagnostic using fzf-lua
-		vim.keymap.set("n", "fd",  require("fzf-lua").diagnostics_document,{ noremap = true, silent = true })
+		vim.keymap.set("n", "fd", require("fzf-lua").diagnostics_document, { noremap = true, silent = true })
 		-- show line diagnostics
 		vim.keymap.set("n", "ld", vim.diagnostic.open_float, { noremap = true, silent = true })
 		-- go to the previous diagnostic message (e.g., error or warning)
@@ -166,6 +166,9 @@ return {
 			-- 🦀 Rust
 			rust_analyzer = {},
 
+			-- 🤚 Bash
+			bashls = {},
+
 			-- ⚙️ Lua / Neovim
 			lua_ls = {
 				settings = {
@@ -219,17 +222,22 @@ return {
 		-- You can add other tools here that you want Mason to install
 		-- for you, so that they are available from within Neovim.
 
+		-- 👍 For lsp servers
 		local ensure_installed = vim.tbl_keys(servers or {})
 
-		-- 1. Ensure binaries are installed using mason and mason-tool-installer and then `conform.nvim` to use them
+		-- 👍 For formatters
+		-- 1. Ensure binaries are installed using mason and mason-tool-installer and then use `conform.nvim` to use them
 		vim.list_extend(ensure_installed, {
 			"stylua", -- Used to format Lua code
 			"prettierd", -- Used to format javascript and typescript code
+			-- For Python
 			"isort",
 			"black",
+			-- For Rust
 			"rustfmt",
 		})
 
+		-- ➡️ Automatically ensure the tools you need for development are always installed. When using Mason in Neovim, you normally have to manually install tools(formatter,linters,lsps)
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 		-- 🔗 Bridges Mason & nvim-lspconfig:
@@ -237,7 +245,8 @@ return {
 		-- with Neovim’s built-in LSP client configuration.
 		-- 🧠 In short: Mason installs → mason-lspconfig links → lspconfig runs.
 		require("mason-lspconfig").setup({
-			ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+			ensure_installed = {}, -- explicitly set to an empty table , populates installs via mason-tool-installer
+			-- mason-tool-installer manages it so off
 			automatic_installation = false,
 			handlers = {
 				function(server_name)

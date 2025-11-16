@@ -4,6 +4,9 @@ return {
 		dependencies = {
 			"L3MON4D3/LuaSnip",
 			"rafamadriz/friendly-snippets",
+			"kristijanhusak/vim-dadbod-completion", -- SQL completion
+			-- Additional plugin, feel free to remove it
+			"moyiz/blink-emoji.nvim", -- Emoji completion
 		},
 		version = "1.*",
 		opts = {
@@ -21,17 +24,19 @@ return {
 			},
 
 			-- (Default) Only show the documentation popup when manually triggered
-			completion = { documentation = { auto_show = true } },
+			completion = { documentation = { auto_show = false } },
 			-- Shows function signature while typing
 			signature = { enabled = true },
-			-- Disable command line completion:
-			cmdline = { enabled = false },
+			-- Enable command line ghost completion:
+			cmdline = { completion = { ghost_text = { enabled = true } } },
+
+			snippets = { preset = "luasnip" },
 
 			-- Default list of enabled providers defined so that you can extend it
 			-- elsewhere in your config, without redefining it, due to `opts_extend`
 			sources = {
 				-- More configuration for lsp in lsp.lua
-				default = { "lsp", "path", "snippets", "buffer", "dadbod" },
+				default = { "lsp", "path", "snippets", "buffer", "dadbod", "emoji" },
 				per_filetype = {
 					sql = { "snippets", "dadbod", "buffer" },
 				},
@@ -39,6 +44,32 @@ return {
 					-- Configuring vim-dadbod-completion for blink-cmp, supports PostgreSQL, MySQL,SQLite
 					-- Out of the box integration with vim-dadbod-ui
 					dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+
+					-- Configuring emoji-completion
+                    -- use ':', to show empji autocompletion
+					emoji = {
+						module = "blink-emoji",
+						name = "Emoji",
+						score_offset = 15, -- Tune by preference
+						opts = {
+							insert = true, -- Insert emoji (default) or complete its name
+							---@type string|table|fun():table
+							trigger = function()
+								return { ":" }
+							end,
+						},
+						should_show_items = function()
+							local blacklist = { "NvimTree", "oil", "help" }
+							return not vim.tbl_contains(blacklist, vim.o.filetype)
+
+							-- To enable it only for certain files
+							-- return vim.tbl_contains(
+							-- 	-- Enable emoji completion only for git commits and markdown.
+							-- 	-- By default, enabled for all file-types.
+							-- 	{ "gitcommit", "markdown" },
+							-- 	vim.o.filetype
+						end,
+					},
 				},
 			},
 

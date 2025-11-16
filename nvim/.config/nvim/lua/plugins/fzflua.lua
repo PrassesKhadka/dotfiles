@@ -75,7 +75,7 @@ return {
 			function()
 				require("fzf-lua").oldfiles()
 			end,
-			desc = "[F]ind [O]ld Files",
+			desc = "[F]ind [O]ld Files/Buffers",
 		},
 		{
 			"<leader><leader>",
@@ -95,6 +95,8 @@ return {
 	opts = function()
 		return {
 			{ "border-fused", "hide" },
+			-- too slow, especially for large repo
+			git_icons = false,
 			keymap = {
 				builtin = {
 					["<S-j>"] = "preview-page-down",
@@ -105,7 +107,6 @@ return {
 				},
 			},
 			winopts = {
-				profile = "telescope",
 				border = "rounded",
 				height = 0.9,
 				width = 0.9,

@@ -23,7 +23,7 @@ return {
 		require("conform").setup(opts)
 
 		-- Keymap for formatting
-		vim.keymap.set("n", "<leader>f", function()
+		vim.keymap.set("n", "<leader>cf", function()
 			require("conform").format({
 				lsp_format = "fallback",
 				async = false,

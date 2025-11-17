@@ -121,7 +121,7 @@ alias yd="yarn dev"
 
 # Gradle commands
 alias gsa="./gradlew spotlessApply"
-alias gb="./gradlew build --refresh-dependencies"
+alias gb="./gradlew clean build --refresh-dependencies"
 alias grun="./gradlew bootRun --args='--spring.profiles.active=local --server.port=8080'"
 
 # Poetry (FastAPI / Uvicorn)

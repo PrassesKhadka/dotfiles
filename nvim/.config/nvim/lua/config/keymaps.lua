@@ -10,10 +10,11 @@ vim.o.timeoutlen = 300
 -- Exit insert mode by typing jj
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, silent = true })
 
+-- Found out these can be done using o and O
 -- Map Enter to add an empty line below and still remain in normal mode
-vim.keymap.set("n", "<CR>", "o<Esc>", { desc = "Empty line below" })
+-- vim.keymap.set("n", "<CR>", "o<Esc>", { desc = "Empty line below" })
 -- Map Shift+Enter to add an empty line above and still remain in normal mode
-vim.keymap.set("n", "<S-CR>", "O<Esc>", { desc = "Empty line above" })
+-- vim.keymap.set("n", "<S-CR>", "O<Esc>", { desc = "Empty line above" })
 
 -- In neovim Ctrl+I is also interpreted as a Tab key.
 -- To avoid override the default, this is written

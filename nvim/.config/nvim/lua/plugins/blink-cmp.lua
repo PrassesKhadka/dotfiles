@@ -9,10 +9,12 @@ return {
 			"moyiz/blink-emoji.nvim", -- Emoji completion
 		},
 		version = "1.*",
+
 		opts = {
 			keymap = {
-				["<Tab>"] = { "accept", "fallback" },
-				["<C-q>"] = { "hide", "fallback" },
+				["<Enter>"] = { "accept", "fallback" },
+				["<Esc>"] = { "hide", "fallback" },
+				["<Tab>"] = { "select_next", "show", "snippet_forward", "fallback" },
 				["<C-j>"] = { "select_next", "show", "snippet_forward", "fallback" },
 				["<C-k>"] = { "select_prev" },
 				["<C-u>"] = { "scroll_documentation_up", "fallback" },
@@ -42,11 +44,11 @@ return {
 				},
 				providers = {
 					-- Snippets → highest priority
-					snippets = {
-						name = "Snippets",
-						module = "blink.cmp.sources.snippets",
-						score_offset = 1000, -- 👈 higher score = higher priority
-					},
+					-- snippets = {
+					-- 	name = "Snippets",
+					-- 	module = "blink.cmp.sources.snippets",
+					-- 	score_offset = 1000, -- 👈 higher score = higher priority
+					-- },
 
 					-- Configuring vim-dadbod-completion for blink-cmp, supports PostgreSQL, MySQL,SQLite
 					-- Out of the box integration with vim-dadbod-ui

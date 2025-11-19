@@ -6,7 +6,13 @@ return {
 		{
 			"ff",
 			function()
-				require("fzf-lua").files()
+				require("fzf-lua").files({
+					winopts = {
+						preview = {
+							hidden = true,
+						},
+					},
+				})
 			end,
 			desc = "Find Files in project directory",
 		},
@@ -73,7 +79,13 @@ return {
 		{
 			"fo",
 			function()
-				require("fzf-lua").oldfiles()
+				require("fzf-lua").oldfiles({
+					winopts = {
+						preview = {
+							hidden = true,
+						},
+					},
+				})
 			end,
 			desc = "[F]ind [O]ld Files/Buffers",
 		},
@@ -114,7 +126,7 @@ return {
 					layout = "horizontal", -- 'horizontal' means the preview is on the right of the results
 					horizontal = "right:50%", -- The preview takes up 50% of the horizontal space
 					border = "single", -- Use a border for the preview
-					-- hidden = "visible", -- Preview visible by default
+					hidden = visible, -- Preview "visible" by default, "false" to switch it off
 				},
 			},
 		}

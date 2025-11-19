@@ -113,7 +113,31 @@ alias aga="ag --hidden --color --color-line-number '0;35' --color-match '46;30' 
 alias curlh="curl -sILX GET"
 alias curld="curl -A \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36\""
 alias curlm="curl -A \"Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) CriOS/28.0.1500.12 Mobile/10B329 Safari/8536.25\""
-alias fuck='sudo "$BASH" -c "$(history -p !!)"'
+
+# For API calls
+# Eg: api GET https://api.example.com/users
+# api POST https://api.example.com/users '{"name":"Prasses"}'
+api() {
+  if [[ $# -lt 2 ]]; then
+    echo "Usage: api METHOD URL [DATA]"
+    echo "Example GET:  api GET https://api.example.com/users"
+    echo "Example POST: api POST https://api.example.com/users '{\"name\":\"Prasses\"}'"
+    return 1
+  fi
+
+  local METHOD=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+  local URL="$2"
+  local DATA="$3"
+
+  if [[ "$METHOD" == "GET" ]]; then
+    curl -v -X GET -H "Accept: application/json" -H "Content-Type: application/json" "$URL"
+  elif [[ "$METHOD" == "POST" ]]; then
+    curl -v -X POST -H "Accept: application/json" -H "Content-Type: application/json" -d "$DATA" "$URL"
+  else
+    echo "Unsupported method: $METHOD"
+    return 1
+  fi
+}
 
 # Yarn commands
 alias yb="yarn build"
@@ -132,7 +156,8 @@ export FUNCNEST=500
 
 # for fzf
 # use fd instead of the default find
-export FZF_DEFAULT_COMMAND="fd --type f"
+# respect .gitignore
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
 export FZF_DEFAULT_OPTS='--style full --height 100% --layout=reverse --info=inline --border=rounded --margin=3% --color=dark --cycle --multi --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 export FZF_COMPLETION_TRIGGER='**'
 # fzf keybindings using ctrl+t

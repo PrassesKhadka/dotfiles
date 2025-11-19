@@ -23,7 +23,8 @@ Make sure you have these packages installed
 - [golang](https://go.dev/doc/install) 
 - [lazygit](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#installation)
 - [lazydocker](https://github.com/jesseduffield/lazydockerhttps://github.com/jesseduffield/lazydocker) 
-
+- [nvm](https://github.com/nvm-sh/nvm)
+- [pyenv](https://github.com/pyenv/pyenv) 
 
 ```bash
 sudo apt install eza
@@ -47,6 +48,9 @@ sudo apt install golang-go
 
 # For lazydocker
 curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+
+# For nvm
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 ```
 
 #### Zsh

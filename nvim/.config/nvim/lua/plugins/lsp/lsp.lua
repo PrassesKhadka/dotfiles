@@ -128,6 +128,19 @@ return {
 		--  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
 		local original_capabilities = vim.lsp.protocol.make_client_capabilities()
 		local capabilities = require("blink.cmp").get_lsp_capabilities(original_capabilities)
+
+		-- # Handle Auto-Imports
+		-- Enable resolve support for auto-imports
+		capabilities.textDocument.completion.completionItem.resolveSupport = {
+			properties = { "documentation", "detail", "additionalTextEdits" },
+		}
+
+		-- Ensure the LSP can resolve import edits
+		vim.lsp.handlers["textDocument/completionItem/resolve"] = vim.lsp.handlers["textDocument/completionItem/resolve"]
+			or function(_, result)
+				return result
+			end
+
 		-- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
 		--  -- Enable the following language servers
@@ -140,7 +153,22 @@ return {
 		--  For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 		local servers = {
 			-- 🌐 Frontend
-			ts_ls = {},
+			ts_ls = {
+				settings = {
+					javascript = {
+						preferences = {
+							importModuleSpecifierPreference = "relative",
+							quotePreference = "auto",
+						},
+					},
+					typescript = {
+						preferences = {
+							importModuleSpecifierPreference = "relative",
+							quotePreference = "auto",
+						},
+					},
+				},
+			},
 			html = {},
 			cssls = {},
 			tailwindcss = {},
@@ -154,6 +182,7 @@ return {
 				settings = {
 					python = {
 						analysis = {
+							autoImportCompletions = true,
 							pythonPath = "/usr/bin/python3",
 							autoSearchPaths = true,
 							useLibraryCodeForTypes = true,
@@ -164,7 +193,15 @@ return {
 			},
 
 			-- 🦀 Rust
-			rust_analyzer = {},
+			rust_analyzer = {
+				settings = {
+					["rust-analyzer"] = {
+						assists = { importMergeBehavior = "full" },
+						cargo = { loadOutDirsFromCheck = true },
+						imports = { granularity = { group = "module" }, prefix = "self" },
+					},
+				},
+			},
 
 			-- 🤚 Bash
 			bashls = {},

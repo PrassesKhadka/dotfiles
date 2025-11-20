@@ -25,6 +25,7 @@ Make sure you have these packages installed
 - [lazydocker](https://github.com/jesseduffield/lazydockerhttps://github.com/jesseduffield/lazydocker) 
 - [nvm](https://github.com/nvm-sh/nvm)
 - [pyenv](https://github.com/pyenv/pyenv) 
+- [openjdk-21-jdk](https://openjdk.org/projects/jdk/21/)
 
 ```bash
 sudo apt install eza
@@ -51,6 +52,9 @@ curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/i
 
 # For nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+
+# For Java
+sudo apt install openjdk-21-jdk
 ```
 
 #### Zsh

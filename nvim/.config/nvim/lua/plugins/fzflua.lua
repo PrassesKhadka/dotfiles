@@ -7,6 +7,8 @@ return {
 			"ff",
 			function()
 				require("fzf-lua").files({
+					-- show hidden files but NOT git ignored ones
+					cmd = "fd --type f --hidden --exclude .git",
 					winopts = {
 						preview = {
 							hidden = true,
@@ -19,7 +21,10 @@ return {
 		{
 			"fg",
 			function()
-				require("fzf-lua").live_grep()
+				require("fzf-lua").live_grep({
+					-- search for hidden files but not for gitignored
+					cmd = "rg --vimgrep --hidden --ignore-vcs",
+				})
 			end,
 			desc = "Find by grepping in project directory",
 		},

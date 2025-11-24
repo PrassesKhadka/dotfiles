@@ -1,6 +1,6 @@
 vim.cmd.colorscheme("rose-pine-moon")
 vim.opt.wrap = true
-vim.opt.number = true  -- enable line numbers
+vim.opt.number = true -- enable line numbers
 vim.opt.relativenumber = true
 
 -- Disable swap/backup files
@@ -22,6 +22,7 @@ vim.opt.softtabstop = 4
 
 -- Cursor settings
 vim.opt.guicursor = "n-v-c-sm-i-ci-ve:block,r-cr-o:hor20,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor"
+vim.api.nvim_set_hl(0, "Cursor", { bg = "#FFFF00", fg = "#000000" })
 vim.opt.scrolloff = 10
 vim.opt.sidescrolloff = 8
 
@@ -48,7 +49,7 @@ vim.opt.undofile = true
 vim.opt.undodir = vim.fn.expand("~/.local/share/nvim/undo")
 
 -- Reasonable limits for undo history
-vim.opt.undolevels = 500  -- Save up to 500 undo steps per file
+vim.opt.undolevels = 500 -- Save up to 500 undo steps per file
 vim.opt.undoreload = 5000 -- Reload up to 5000 lines for undo
 
 --autoread files

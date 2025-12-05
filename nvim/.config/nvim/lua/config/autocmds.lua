@@ -62,3 +62,91 @@ vim.keymap.set("n", "lly", function()
 	local line = string.format(template, var, var)
 	vim.api.nvim_put({ line }, "l", true, true)
 end, { desc = "Insert debug print for last yank" })
+
+-- Log last declared variable
+vim.keymap.set("n", "llv", function()
+	local ft = vim.bo.filetype
+
+	-- Define separate patterns for Rust to handle the 'mut' keyword reliably
+	local patterns = {
+		rust_mut = [[let%s+mut%s+([%a_][%w_]*)]], -- Matches 'let mut variable'
+		rust_plain = [[let%s+([%a_][%w_]*)]], -- Matches 'let variable'
+
+		javascript = [[const%s+([%a_][%w_]*)]],
+		typescript = [[const%s+([%a_][%w_]*)]],
+		javascriptreact = [[const%s+([%a_][%w_]*)]],
+		typescriptreact = [[const%s+([%a_][%w_]*)]],
+		python = [[([%a_][%w_]*)%s*=]],
+		java = [[([%a_][%w_]*)%s*=[^=]],
+	}
+
+	local templates = {
+		javascript = 'console.log("%s: ", %s);',
+		typescript = 'console.log("%s: ", %s);',
+		javascriptreact = 'console.log("%s: ", %s);',
+		typescriptreact = 'console.log("%s: ", %s);',
+
+		python = 'print(f"%s: {%s}")',
+		java = 'System.out.println("%s: " + %s);',
+		rust = 'println!("{}: {:?}", "%s", %s);',
+	}
+
+	local var = nil
+
+	-- === RUST-SPECIFIC LOGIC ===
+	if ft == "rust" then
+		local current_line = vim.fn.line(".")
+
+		for l = current_line, 1, -1 do
+			local text = vim.fn.getline(l)
+
+			-- 1. Try to match 'let mut' first (most specific)
+			var = text:match(patterns.rust_mut)
+			if var then
+				break
+			end
+
+			-- 2. If no match, try to match 'let'
+			var = text:match(patterns.rust_plain)
+			if var then
+				break
+			end
+		end
+
+		-- After the loop, if a variable was found, use the rust template
+		if var then
+			local log_line = string.format(templates.rust, var, var)
+			vim.api.nvim_put({ log_line }, "l", true, true)
+			return
+		end
+
+	-- === GENERAL LOGIC (For all other languages) ===
+	else
+		local pattern = patterns[ft]
+		local template = templates[ft]
+
+		if not pattern or not template then
+			print("Unsupported filetype: " .. ft)
+			return
+		end
+
+		local current_line = vim.fn.line(".")
+
+		for l = current_line, 1, -1 do
+			local text = vim.fn.getline(l)
+			local found = text:match(pattern)
+			if found then
+				var = found
+				break
+			end
+		end
+
+		if var then
+			local log_line = string.format(template, var, var)
+			vim.api.nvim_put({ log_line }, "l", true, true)
+			return
+		end
+	end
+
+	print("No variable found in this block.")
+end, { desc = "Insert debug log for last declared variable" })

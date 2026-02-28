@@ -78,7 +78,10 @@ alias e='$EDITOR'
 alias se='sudo $EDITOR'
 alias g="git"
 alias 'cd..'='cd ../'
+alias rm="rm -I"
+alias rmi="rm -i"
 alias rmrf="rm -rf"
+alias rmri="rm -rI"
 alias psef="ps -ef"
 alias ZZ="exit"
 

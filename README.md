@@ -124,6 +124,12 @@ Prefix Key is Ctrl+b
 To Install Plugins: <Prefix>I
 ```
 
+To source your tmux config
+
+```
+ tmux source-file ~/dotfiles/tmux/.config/tmux/tmux.conf  
+```
+
 #### Neovim
 
 - Install [Neovim](https://github.com/neovim/neovim) from source
@@ -133,6 +139,9 @@ nvim --version
 cd ~/dotfiles
 nv
 ```
+
+## External toolings
+- [jarexplorer](https://dst.in.ua/jarexp/)
 
 ## Thanks / Shoutout / Inspired By
 

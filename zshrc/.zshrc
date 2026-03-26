@@ -74,6 +74,46 @@ alias c='clear'
 alias ts='tmux switch-client -t'
 alias disks='echo "╓───── m o u n t . p o i n t s";echo "╙────────────────────────────────────── ─ ─ ";lsblk -a;echo "";echo "╓───── d i s k . u s a g e";echo "╙────────────────────────────────────── ─ ─ ";df -h;'
 
+# Kill port
+fuck () {
+  if [ -z "$1" ]; then
+    echo "Usage: fuck <port>"
+    return 1
+  fi
+  sudo kill $(sudo lsof -t -i:$1)
+}
+# Docker
+# containers
+alias dstopall='docker stop $(docker ps -q)'
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias dstart='docker start'
+alias dstop='docker stop'
+alias drm='docker rm'
+alias drmf='docker rm -f'
+# images
+alias di='docker images'
+alias drmi='docker rmi'
+alias drmif='docker rmi -f'
+alias dlog='docker logs -f'
+alias dexec='docker exec -it'
+# volumes
+alias dv='docker volume'
+alias dvl='docker volume ls'
+alias dvi='docker volume inspect'
+alias dvrm='docker volume rm'
+# compose
+alias dc='docker compose'
+alias dcu='docker compose up'
+alias dcud='docker compose up -d'
+alias dcd='docker compose down'
+alias dcl='docker compose logs -f'
+# cleanups
+alias dprune='docker system prune -f'
+alias dpruneall='docker system prune -a -f'
+alias dvolprune='docker volume prune -f'
+alias dvrmall='docker volume rm $(docker volume ls -q)'
+
 alias e='$EDITOR'
 alias se='sudo $EDITOR'
 alias g="git"

@@ -64,6 +64,7 @@ return {
 				neogen.generate({ type = "func" })
 			end, { desc = "Neogen: function doc" })
 
+			-- works for structs in rust
 			vim.keymap.set("n", "<leader>nc", function()
 				neogen.generate({ type = "class" })
 			end, { desc = "Neogen: class doc" })
@@ -72,22 +73,13 @@ return {
 				neogen.generate({ type = "type" })
 			end, { desc = "Neogen: type doc" })
 
+			vim.keymap.set("n", "<leader>nc", function()
+				vim.cmd("normal! O/// ")
+			end, { desc = "Insert rust doc comment" })
+
 			vim.keymap.set("n", "<leader>nF", function()
 				neogen.generate()
 			end, { desc = "Neogen: generate doc" })
-
-			-- jump placeholders
-			vim.keymap.set({ "i", "s" }, "<C-l>", function()
-				if neogen.jumpable() then
-					neogen.jump_next()
-				end
-			end, { desc = "Neogen: next field" })
-
-			vim.keymap.set({ "i", "s" }, "<C-h>", function()
-				if neogen.jumpable(true) then
-					neogen.jump_prev()
-				end
-			end, { desc = "Neogen: previous field" })
 		end,
 	},
 }

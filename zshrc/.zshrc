@@ -47,6 +47,21 @@ fi
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
 
+# ZSH autocompletion
+autoload -Uz compinit
+compinit
+
+bindkey -v
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*' menu select
+
+# Vim style movement in menu
+bindkey -M menuselect 'h' backward-char
+bindkey -M menuselect 'j' down-line-or-history
+bindkey -M menuselect 'k' up-line-or-history
+bindkey -M menuselect 'l' forward-char
+
 # Aliases
 # Set personal Aliases, overriding those provided by Oh My Zsh libs,
 # ---- Eza (better ls) -----

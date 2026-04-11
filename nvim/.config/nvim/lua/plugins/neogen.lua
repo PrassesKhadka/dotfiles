@@ -73,10 +73,6 @@ return {
 				neogen.generate({ type = "type" })
 			end, { desc = "Neogen: type doc" })
 
-			vim.keymap.set("n", "<leader>nc", function()
-				vim.cmd("normal! O/// ")
-			end, { desc = "Insert rust doc comment" })
-
 			vim.keymap.set("n", "<leader>nF", function()
 				neogen.generate()
 			end, { desc = "Neogen: generate doc" })

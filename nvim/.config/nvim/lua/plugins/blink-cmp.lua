@@ -30,7 +30,15 @@ return {
 			},
 
 			-- (Default) Only show the documentation popup when manually triggered
-			completion = { documentation = { auto_show = false } },
+			completion = {
+				documentation = {
+					auto_show = true,
+					auto_show_delay_ms = 200,
+					window = {
+						border = "rounded",
+					},
+				},
+			},
 			-- Shows function signature while typing
 			signature = { enabled = false },
 			-- Enable command line ghost completion:

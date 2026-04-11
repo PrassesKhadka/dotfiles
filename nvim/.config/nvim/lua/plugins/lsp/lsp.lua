@@ -193,9 +193,14 @@ return {
 			},
 
 			-- 🦀 Rust
-			rust_analyzer = {
-				settings = {
+			settings = {
+				rust_analyzer = {
 					["rust-analyzer"] = {
+						completion = {
+							autoimport = {
+								enable = true,
+							},
+						},
 						assists = { importMergeBehavior = "full" },
 						cargo = { loadOutDirsFromCheck = true },
 						imports = { granularity = { group = "module" }, prefix = "self" },

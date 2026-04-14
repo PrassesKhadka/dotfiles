@@ -44,7 +44,7 @@ return {
 				},
 				filesystem = {
 					follow_current_file = { enabled = true }, -- Automatically focus the file in the explorer
-					hijack_netrw_behavior = "open_current", -- Replace netrw
+					hijack_netrw_behavior = "disabled", -- Let session restore win on startup; open Neo-tree manually when needed
 					filtered_items = {
 						visible = true, -- Show hidden files
 						hide_dotfiles = false, -- Show dotfiles (e.g., `.gitignore`, `.env`)

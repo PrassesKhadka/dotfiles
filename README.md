@@ -21,6 +21,7 @@ Make sure you have these packages installed
 - [fzf](https://github.com/junegunn/fzf?tab=readme-ov-file#installation)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [golang](https://go.dev/doc/install) 
+- [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 - [lazygit](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#installation)
 - [lazydocker](https://github.com/jesseduffield/lazydockerhttps://github.com/jesseduffield/lazydocker) 
 - [nvm](https://github.com/nvm-sh/nvm)
@@ -133,6 +134,39 @@ To source your tmux config
 #### Neovim
 
 - Install [Neovim](https://github.com/neovim/neovim) from source
+
+Currently all the configurations are for Neovim `0.12`, including `nvim-treesitter`.
+
+##### `nvim-treesitter` on Neovim `0.12`
+
+With the new `nvim-treesitter` setup for Neovim `0.12`, parser compilation is handled outside startup.
+This config no longer runs parser installs on every launch, which avoids noisy startup failures when
+`tree-sitter-cli` is missing or not set up yet.
+
+You still need `tree-sitter-cli` available in your shell `PATH` for parser installs and updates.
+
+###### Install `tree-sitter-cli`
+
+Use your system package manager or Cargo. Avoid the older npm-based global install if possible.
+
+```bash
+cargo install tree-sitter-cli
+```
+
+###### Quick sanity check
+
+```bash
+tree-sitter --version
+which tree-sitter
+```
+
+###### After setup
+
+```vim
+:Lazy sync
+:TSUpdate
+:checkhealth nvim-treesitter
+```
 
 ```bash
 nvim --version

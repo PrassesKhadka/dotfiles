@@ -193,8 +193,8 @@ return {
 			},
 
 			-- 🦀 Rust
-			settings = {
-				rust_analyzer = {
+			rust_analyzer = {
+				settings = {
 					["rust-analyzer"] = {
 						completion = {
 							autoimport = {

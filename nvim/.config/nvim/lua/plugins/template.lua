@@ -1,19 +1,23 @@
 return {
-    'glepnir/template.nvim',
-    config = function()
-        require('template').setup({
-            -- Path where your templates are stored
-            temp_dir = '~/.config/nvim/templates',
+	"glepnir/template.nvim",
+	cmd = { "Template", "TemProject" },
+	config = function()
+		local temp_dir = vim.fs.normalize(vim.fn.stdpath("config") .. "/templates")
+		if vim.fn.isdirectory(temp_dir) == 0 then
+			return
+		end
 
-            -- Auto-detect file types or set manually
-            patterns = {
-                -- Define patterns for your templates
-                '*.cpp', '*.js', '*.py', '*.java', '*.kotlin'
-            },
-
-            -- Automatically apply templates based on patterns
-            auto_apply = false,
-            apply_in_place = true,
-        })
-    end
+		require("template").setup({
+			temp_dir = temp_dir,
+			patterns = {
+				"*.cpp",
+				"*.js",
+				"*.py",
+				"*.java",
+				"*.kotlin",
+			},
+			auto_apply = false,
+			apply_in_place = true,
+		})
+	end,
 }

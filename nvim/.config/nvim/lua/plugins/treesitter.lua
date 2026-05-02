@@ -1,51 +1,78 @@
+local languages = {
+	"json",
+	"javascript",
+	"typescript",
+	"tsx",
+	"go",
+	"yaml",
+	"html",
+	"css",
+	"python",
+	"http",
+	"prisma",
+	"markdown",
+	"markdown_inline",
+	"svelte",
+	"graphql",
+	"bash",
+	"lua",
+	"vim",
+	"dockerfile",
+	"gitignore",
+	"query",
+	"vimdoc",
+	"c",
+	"java",
+	"rust",
+	"ron",
+}
+
+local function tree_sitter_cli_available()
+	if vim.fn.executable("tree-sitter") == 0 then
+		vim.notify("Skipping Treesitter parser install: tree-sitter CLI was not found", vim.log.levels.WARN)
+		return false
+	end
+
+	local result = vim.system({ "tree-sitter", "--version" }, { text = true }):wait()
+	if result.code == 0 then
+		return true
+	end
+
+	local reason = vim.trim((result.stderr ~= "" and result.stderr) or result.stdout or "unknown error")
+	if reason == "" then
+		reason = "unknown error"
+	end
+	vim.notify("Skipping Treesitter parser install: " .. reason, vim.log.levels.WARN)
+	return false
+end
+
 return {
 	"nvim-treesitter/nvim-treesitter",
 	branch = "main",
 	lazy = false,
-	build = ":TSUpdate",
+	build = function()
+		local ts = require("nvim-treesitter")
+		ts.setup({
+			install_dir = vim.fn.stdpath("data") .. "/site",
+		})
+		if tree_sitter_cli_available() then
+			ts.install(languages, { max_jobs = 4, summary = true }):wait(300000)
+			ts.update(languages, { max_jobs = 4, summary = true }):wait(300000)
+		end
+	end,
 	dependencies = {
 		{
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			branch = "main",
+			lazy = false,
 		},
 	},
 	config = function()
 		local ts = require("nvim-treesitter")
-		local languages = {
-			"json",
-			"javascript",
-			"typescript",
-			"tsx",
-			"go",
-			"yaml",
-			"html",
-			"css",
-			"python",
-			"http",
-			"prisma",
-			"markdown",
-			"markdown_inline",
-			"svelte",
-			"graphql",
-			"bash",
-			"lua",
-			"vim",
-			"dockerfile",
-			"gitignore",
-			"query",
-			"vimdoc",
-			"c",
-			"java",
-			"rust",
-			"ron",
-		}
 
 		ts.setup({
 			install_dir = vim.fn.stdpath("data") .. "/site",
 		})
-		-- Parser install/update is handled by :TSUpdate and the plugin build step.
-		-- Running installs during startup can fail loudly if tree-sitter CLI tooling
-		-- is not available yet, and it slows down every boot.
 
 		vim.api.nvim_create_autocmd("FileType", {
 			pattern = languages,
@@ -66,6 +93,9 @@ return {
 		require("nvim-treesitter-textobjects").setup({
 			select = {
 				lookahead = true,
+			},
+			move = {
+				set_jumps = true,
 			},
 		})
 

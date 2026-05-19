@@ -1,0 +1,8 @@
+# SSH specific
+psg() {
+  ps -ef | grep -i -- "$1" | grep -v grep
+}
+
+nsg() {
+  netstat -natp | grep -i -- "$1"
+}

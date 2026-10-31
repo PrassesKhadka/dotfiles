@@ -93,7 +93,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.
 
 #### fzf
 
-fzf lists with `fd`, previews with `fzf-preview` (in `tools/`), and uses the Rosé Pine Moon theme (see Theme).
+fzf lists with `fd`, previews with `fzf-preview` (in `tools/`), and uses the Batman colors (see Theme).
 It runs full screen with the prompt on the bottom line, the best match at the top, and the preview hidden until Ctrl-/.
 [fzf-tab](https://github.com/Aloxaf/fzf-tab) turns every Tab completion into an fzf list with previews.
 
@@ -120,19 +120,20 @@ zi             zoxide's interactive directory jump
 
 #### Theme
 
-Everything uses [Rosé Pine](https://rosepinetheme.com/) Moon:
+Everything except Neovim uses WezTerm's built-in **Batman** scheme: a near-black background, greys and yellow. There's no red or
+green, so alerts use bright yellow (e.g. the tmux prefix and bell, low battery).
 
-- WezTerm: built-in `rose-pine-moon` color scheme
-- tmux: Rosé Pine colors set as catppuccin's `@thm_*` values at the top of `tmux.conf` (the catppuccin plugin only
+- WezTerm: `Batman` color scheme, with its light grey (`#c6c5bf`) as the text color since the default is too dim
+- tmux: Batman colors set as catppuccin's `@thm_*` values at the top of `tmux.conf` (the catppuccin plugin only
   provides the status bar layout)
-- Neovim: `rose-pine-moon` colorscheme and the `rose-pine` lualine theme
+- Neovim is the exception: it uses [Tokyo Night](https://github.com/folke/tokyonight.nvim) (`tokyonight-night`,
+  transparent background) with lualine's `auto` theme. `:colorscheme batman` switches to `colors/batman.lua`, which
+  matches the rest of the setup (errors bright yellow, warnings gold, info/hints grey)
 - fzf: colors in `FZF_DEFAULT_OPTS` in `.zshrc`
-- bat (fzf previews and `cat`): `bat/.config/bat/themes/rose-pine-moon.tmTheme`, selected with `BAT_THEME`.
-  After stowing, build bat's theme cache once:
+- bat (fzf previews and `cat`): the built-in `ansi` theme, which uses the terminal's colors, so it follows WezTerm
 
-```bash
-bat cache --build
-```
+The previous Rosé Pine Moon setup is still available: `rose-pine` is installed in Neovim, its bat theme is in
+`bat/.config/bat/themes` (run `bat cache --build` after stowing), and the full config is in git history.
 
 #### Wezterm
 

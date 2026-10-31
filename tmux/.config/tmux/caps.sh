@@ -12,7 +12,8 @@ done
 last=""
 
 update() {
-  state="$(cat "$caps_file" 2>/dev/null)"
+  state=""
+  read -r state < "$caps_file" 2>/dev/null
   if [ "$state" = "1" ]; then
     text="🔒 CAPS"
   else
@@ -32,8 +33,9 @@ if command -v inotifywait >/dev/null 2>&1; then
     update
   done
 else
+  # polling fallback; install inotify-tools to avoid it
   while :; do
     update
-    sleep 0.1
+    sleep 0.3
   done
 fi

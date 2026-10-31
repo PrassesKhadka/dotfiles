@@ -194,8 +194,12 @@ return {
 
 			-- 🦀 Rust
 			rust_analyzer = {
+				cmd = { vim.fn.stdpath("data") .. "/mason/bin/rust-analyzer" },
 				settings = {
 					["rust-analyzer"] = {
+						check = {
+							command = "clippy",
+						},
 						completion = {
 							autoimport = {
 								enable = true,
@@ -282,7 +286,12 @@ return {
 		})
 
 		-- ➡️ Automatically ensure the tools you need for development are always installed. When using Mason in Neovim, you normally have to manually install tools(formatter,linters,lsps)
-		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+		require("mason-tool-installer").setup({
+			ensure_installed = ensure_installed,
+			auto_update = true,
+			run_on_start = true,
+			debounce_hours = 24,
+		})
 
 		-- 🔗 Bridges Mason & nvim-lspconfig:
 		-- Automatically connects LSP servers installed via Mason

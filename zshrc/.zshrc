@@ -180,6 +180,9 @@ alias curlh="curl -sILX GET"
 alias curld="curl -A \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36\""
 alias curlm="curl -A \"Mozilla/5.0 (iPhone; CPU iPhone OS 6_1_3 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) CriOS/28.0.1500.12 Mobile/10B329 Safari/8536.25\""
 
+# Ghidra
+alias ghidra="/opt/ghidra/ghidraRun"
+
 # For API calls
 # Eg: api GET https://api.example.com/users
 # api POST https://api.example.com/users '{"name":"Prasses"}'

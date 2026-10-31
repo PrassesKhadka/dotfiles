@@ -296,6 +296,7 @@ Check the setup with:
 
 ## External toolings
 - [jarexplorer](https://dst.in.ua/jarexp/)
+- Extract the Ghidra archive to /opt/ghidra/. A shell alias is already configured in .zshrc, so you can launch it with the ghidra command. [ghidra](https://github.com/nationalsecurityagency/ghidra)
 
 ## Thanks / Shoutout / Inspired By
 

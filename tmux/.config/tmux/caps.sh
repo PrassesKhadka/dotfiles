@@ -2,6 +2,10 @@
 
 TMUX_BIN="${TMUX_BIN:-tmux}"
 
+# Single instance: tmux.conf starts this on every config reload
+exec 9>"${XDG_RUNTIME_DIR:-/tmp}/tmux-caps.lock"
+flock -n 9 || exit 0
+
 caps_file=""
 for f in /sys/class/leds/*::capslock/brightness; do
   [ -r "$f" ] && caps_file="$f" && break

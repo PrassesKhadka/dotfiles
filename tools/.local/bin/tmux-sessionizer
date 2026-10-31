@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Pick a project folder with fzf and switch to its tmux session (created if missing)
+# Usage: tmux-sessionizer [dir]
+
+project_roots=("$HOME/Desktop/code")
+extra_dirs=("$HOME/dotfiles")
+
+if [ $# -eq 1 ]; then
+  selected="$1"
+else
+  selected=$(
+    {
+      printf '%s\n' "${extra_dirs[@]}"
+      fd --type d --min-depth 1 --max-depth 1 . "${project_roots[@]}"
+    } | fzf --no-multi --prompt 'project ❯ ' \
+      --preview 'eza --tree --level=1 --color=always --icons=always {}'
+  )
+fi
+
+[ -z "$selected" ] && exit 0
+selected="${selected%/}"
+name=$(basename "$selected" | tr ' .:' '___')
+
+if ! tmux has-session -t="$name" 2>/dev/null; then
+  tmux new-session -ds "$name" -c "$selected"
+fi
+
+if [ -z "$TMUX" ]; then
+  tmux attach-session -t "$name"
+else
+  tmux switch-client -t "$name"
+fi

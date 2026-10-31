@@ -1,7 +1,23 @@
--- ctrl+shif+x to get into copy mode and V to visually highlight and y to copy and get out of copy mode in wezterm
+-- ctrl+shift+c copies (WezTerm selection, or tmux copy-mode/mouse selection), ctrl+shift+v pastes
+-- ctrl+shift+x to get into WezTerm's own copy mode and V to visually highlight and y to copy and get out of copy mode
 local wezterm = require("wezterm")
+local act = wezterm.action
 local mux = wezterm.mux
 local config = wezterm.config_builder()
+
+-- Prefer a source-built tmux (/usr/local/bin) over the older distro package
+local tmux = "/usr/bin/tmux"
+local f = io.open("/usr/local/bin/tmux", "r")
+if f then
+	f:close()
+	tmux = "/usr/local/bin/tmux"
+end
+
+-- GPU rendering via Vulkan; switch back to "OpenGL" if you see glitches
+config.front_end = "WebGpu"
+
+-- Kitty graphics protocol (off by default), used by snacks.nvim to show images/PDFs in nvim
+config.enable_kitty_graphics = true
 -- Color scheme
 config.color_scheme = "Gruvbox Dark (Gogh)"
 
@@ -11,7 +27,7 @@ config.font_size = 12
 
 -- scrollbar setup
 config.enable_scroll_bar = true -- show scrollbar
-config.scrollback_lines = 3500 -- how many lines to keep in history
+config.scrollback_lines = 3500 -- only used outside tmux; inside tmux see history-limit in tmux.conf
 
 -- Dim inactive panes
 config.inactive_pane_hsb = {
@@ -30,7 +46,31 @@ config.initial_cols = 120
 -- Default shell / auto-start tmux
 -- If the session "main" already exists, you’ll be attached to it.
 -- If it doesn’t, tmux will create it for you.
-config.default_prog = { "/usr/bin/tmux", "new", "-A", "-s", "main" }
+config.default_prog = { tmux, "new", "-A", "-s", "main" }
+
+-- Copy / paste
+-- tmux grabs mouse selections, so WezTerm often has nothing selected. In that case copy the
+-- tmux copy-mode selection instead (mouse drags leave the pane in copy mode with the selection kept).
+config.keys = {
+	{
+		key = "C",
+		mods = "CTRL|SHIFT",
+		action = wezterm.action_callback(function(window, pane)
+			if window:get_selection_text_for_pane(pane) ~= "" then
+				window:perform_action(act.CopyTo("ClipboardAndPrimarySelection"), pane)
+				return
+			end
+			wezterm.run_child_process({
+				tmux,
+				"if-shell",
+				"-F",
+				"#{pane_in_mode}",
+				"send-keys -X copy-pipe-and-cancel 'xclip -selection clipboard -i'",
+			})
+		end),
+	},
+	{ key = "V", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
+}
 
 -- Tab bar settings
 config.enable_tab_bar = false

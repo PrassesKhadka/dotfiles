@@ -19,7 +19,8 @@ config.front_end = "WebGpu"
 -- Kitty graphics protocol (off by default), used by snacks.nvim to show images/PDFs in nvim
 config.enable_kitty_graphics = true
 -- Color scheme
-config.color_scheme = "Gruvbox Dark (Gogh)"
+-- Rosé Pine Moon everywhere: WezTerm, tmux, nvim (rose-pine-moon), fzf and bat
+config.color_scheme = "rose-pine-moon"
 
 -- Font settings
 config.font = wezterm.font_with_fallback({})
@@ -70,6 +71,9 @@ config.keys = {
 		end),
 	},
 	{ key = "V", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
+	-- ctrl+backspace deletes the previous word like in editors: send ctrl+w, which zsh, nvim insert/cmdline
+	-- mode and most readline prompts treat as "delete word"
+	{ key = "Backspace", mods = "CTRL", action = act.SendString("\x17") },
 }
 
 -- Tab bar settings

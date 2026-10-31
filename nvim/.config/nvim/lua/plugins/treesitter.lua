@@ -9,11 +9,8 @@ local languages = {
 	"css",
 	"python",
 	"http",
-	"prisma",
 	"markdown",
 	"markdown_inline",
-	"svelte",
-	"graphql",
 	"bash",
 	"lua",
 	"vim",
@@ -21,10 +18,8 @@ local languages = {
 	"gitignore",
 	"query",
 	"vimdoc",
-	"c",
 	"java",
 	"rust",
-	"ron",
 }
 
 local function tree_sitter_cli_available()

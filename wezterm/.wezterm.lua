@@ -19,8 +19,10 @@ config.front_end = "WebGpu"
 -- Kitty graphics protocol (off by default), used by snacks.nvim to show images/PDFs in nvim
 config.enable_kitty_graphics = true
 -- Color scheme
--- Rosé Pine Moon everywhere: WezTerm, tmux, nvim (rose-pine-moon), fzf and bat
-config.color_scheme = "rose-pine-moon"
+-- Batman for WezTerm, tmux, fzf and bat (ansi theme); nvim uses Tokyo Night (colors/batman.lua is the match)
+config.color_scheme = "Batman"
+-- the scheme's default text (#6f6f6f) is too dim on its background; use its light grey
+config.colors = { foreground = "#c6c5bf" }
 
 -- Font settings
 config.font = wezterm.font_with_fallback({})

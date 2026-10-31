@@ -88,8 +88,8 @@ eval "$(zoxide init zsh)"
 alias cd="z"
 alias zz="z -"
 # ---- bat (better cat) ----
-# theme lives in bat/.config/bat/themes; run `bat cache --build` after adding one
-export BAT_THEME="rose-pine-moon"
+# "ansi" uses the terminal's 16 colors, so it follows the WezTerm scheme (Batman); custom themes live in bat/.config/bat/themes
+export BAT_THEME="ansi"
 # no --color=always: bat colors on screen but acts like plain cat in pipes and redirects
 alias cat="bat --plain --wrap character -n"
 # for nvim 
@@ -224,7 +224,7 @@ export FUNCNEST=500
 # use fd instead of the default find
 # respect .gitignore
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
-# Minimal layout: no boxes, just a divider before the preview; Rosé Pine Moon colors (same as WezTerm, tmux, nvim)
+# Minimal layout: no boxes, just a divider before the preview; Batman colors (same as WezTerm and tmux)
 # full screen with the prompt on the bottom line, list reads top to bottom (best match first)
 # preview starts hidden (ctrl-/ shows it); it goes above the list on narrow terminals
 # ctrl-/ toggle preview, ctrl-d/ctrl-u scroll preview, alt-a select all, ctrl-y copy selection
@@ -234,9 +234,9 @@ export FZF_DEFAULT_OPTS="
   --preview-window='right,55%,border-left,hidden,<50(up,50%,border-bottom,hidden)'
   --bind='ctrl-/:toggle-preview,ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up,alt-a:toggle-all'
   --bind='ctrl-y:execute-silent(printf \"%s\n\" {+} | xclip -selection clipboard)'
-  --color='bg:#232136,bg+:#393552,fg:#908caa,fg+:#e0def4,hl:#ea9a97,hl+:#ea9a97,query:#e0def4'
-  --color='info:#9ccfd8,prompt:#f6c177,pointer:#c4a7e7,marker:#eb6f92,spinner:#f6c177'
-  --color='header:#3e8fb0,border:#44415a,label:#908caa,gutter:#232136,preview-bg:#232136'"
+  --color='bg:#1b1d1e,bg+:#4d504c,fg:#a3a3a6,fg+:#dadbd6,hl:#e6dc44,hl+:#fcef0c,query:#dadbd6'
+  --color='info:#919495,prompt:#e6dc44,pointer:#fcef0c,marker:#fff78e,spinner:#fcef0c'
+  --color='header:#737174,border:#505354,label:#a3a3a6,gutter:#1b1d1e,preview-bg:#1b1d1e'"
 export FZF_COMPLETION_TRIGGER='**'
 # ctrl+t: files and dirs, previewed by type (bat, eza tree, pdf text, ...)
 export FZF_CTRL_T_COMMAND='fd --strip-cwd-prefix --hidden --follow --exclude .git'

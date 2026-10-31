@@ -1,4 +1,4 @@
-vim.cmd.colorscheme("rose-pine-moon")
+vim.cmd.colorscheme("tokyonight-night") -- `:colorscheme batman` (colors/batman.lua) matches the terminal instead
 vim.opt.wrap = true
 vim.opt.number = true -- enable line numbers
 vim.opt.relativenumber = true

@@ -124,4 +124,23 @@ return {
             return plugin.load()
         end,
     },
+
+    {
+        -- active colorscheme, applied in config/options.lua
+        "folke/tokyonight.nvim",
+        priority = 1000,
+        lazy = false,
+        config = function()
+            require("tokyonight").setup({
+                style = "night",   -- storm, moon, night or day
+                transparent = true, -- use the terminal background, like the tmux bar
+                styles = {
+                    comments = { italic = true },
+                    keywords = { italic = true },
+                    sidebars = "transparent",
+                    floats = "dark",
+                },
+            })
+        end,
+    },
 }

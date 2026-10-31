@@ -23,10 +23,12 @@ Make sure you have these packages installed
 - [golang](https://go.dev/doc/install) 
 - [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 - [lazygit](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#installation)
-- [lazydocker](https://github.com/jesseduffield/lazydockerhttps://github.com/jesseduffield/lazydocker) 
+- [lazydocker](https://github.com/jesseduffield/lazydocker) 
 - [nvm](https://github.com/nvm-sh/nvm)
 - [pyenv](https://github.com/pyenv/pyenv) 
 - [openjdk-21-jdk](https://openjdk.org/projects/jdk/21/)
+- xclip (tmux/WezTerm copy to the system clipboard), inotify-tools (tmux caps lock indicator)
+- ImageMagick and Ghostscript (images and PDFs in Neovim)
 
 ```bash
 sudo apt install eza
@@ -56,6 +58,9 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 
 # For Java
 sudo apt install openjdk-21-jdk
+
+# Clipboard, caps lock indicator, images/PDFs in Neovim
+sudo apt install xclip inotify-tools imagemagick ghostscript
 ```
 
 #### Zsh
@@ -79,6 +84,25 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~
 #### Wezterm
 
 - Install wezterm: https://wezterm.org/install/linux.html and set it as a startup application with startup cmd as `cd Desktop/code & wezterm`
+- Use the nightly build; the last stable release (`20240203`) is old and noticeably slower
+
+```bash
+curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+sudo apt update
+sudo apt install wezterm-nightly
+```
+
+- WezTerm starts tmux (session `main`) automatically, preferring `/usr/local/bin/tmux` when it exists
+- Rendering uses `front_end = "WebGpu"` (Vulkan); set it back to `"OpenGL"` in `.wezterm.lua` if you see glitches
+
+Copy / paste
+
+```
+Ctrl+Shift+C   copy: the WezTerm selection (Shift+mouse drag), or else the tmux copy-mode / mouse selection
+Ctrl+Shift+V   paste from the system clipboard
+Ctrl+Shift+X   WezTerm's own copy mode (V to select, y to copy)
+```
 
 #### GNU Stow
 
@@ -105,11 +129,29 @@ source ~/.zshrc
 #### Tmux
 
 - Install tmux here: https://github.com/tmux/tmux/wiki/Installing
-
+- Build tmux >= 3.4 from source. Ubuntu 22.04's `apt` package is 3.2a, which can't pass images through to WezTerm
+  (`allow-passthrough` is silently ignored), so images/PDFs in Neovim won't render
 
 ```bash
-sudo apt install tmux
+sudo apt install libevent-dev libncurses-dev build-essential bison pkg-config
+TMUX_VERSION=3.8 # latest: https://github.com/tmux/tmux/releases
+curl -LO https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz
+tar xf tmux-${TMUX_VERSION}.tar.gz
+cd tmux-${TMUX_VERSION}
+./configure --enable-sixel && make
+sudo make install # installs to /usr/local/bin/tmux
 ```
+
+After upgrading, restart the tmux server so the new version is used (tmux-resurrect restores your sessions):
+
+```bash
+tmux kill-server
+```
+
+Notes
+
+- Scrollback is kept by tmux (`history-limit 50000`), not WezTerm
+- Copy mode: `<Prefix>v` (or `<Prefix>[`), `v` to select, `y`/`Enter` to copy to the clipboard. Mouse drags copy on release.
 
 Setup [tpm](https://github.com/tmux-plugins/tpm)
 
@@ -172,6 +214,26 @@ which tree-sitter
 nvim --version
 cd ~/dotfiles
 nv
+```
+
+##### Images and PDFs
+
+[snacks.nvim](https://github.com/folke/snacks.nvim) (`image`) renders images and PDFs when you open them. It needs
+ImageMagick, Ghostscript (for PDFs), `enable_kitty_graphics = true` in WezTerm and tmux >= 3.4 (see the Tmux section).
+
+Ubuntu's ImageMagick 6 blocks PDF conversion by default; allow it with:
+
+```bash
+sudo sed -i 's|<policy domain="coder" rights="none" pattern="PDF" />|<policy domain="coder" rights="read" pattern="PDF" />|' /etc/ImageMagick-6/policy.xml
+```
+
+WezTerm only partly supports the kitty graphics protocol: opening an image/PDF file works, inline images
+(e.g. in markdown) don't. Kitty or Ghostty support both.
+
+Check the setup with:
+
+```vim
+:checkhealth snacks
 ```
 
 ## External toolings

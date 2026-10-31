@@ -28,7 +28,15 @@ HYPHEN_INSENSITIVE="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git zsh-autosuggestions sudo web-search copyfile jsontools zsh-syntax-highlighting vi-mode fzf)
 
+# Keep large pastes fast: skip suggestions/highlighting on huge command lines
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+ZSH_HIGHLIGHT_MAXLENGTH=512
+
 source $ZSH/oh-my-zsh.sh
+
+# Don't highlight pasted text
+zle_highlight+=(paste:none)
 
 # User configuration
 

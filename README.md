@@ -17,6 +17,7 @@ Make sure you have these packages installed
 
 - [eza](https://github.com/eza-community/eza/blob/main/INSTALL.md)
 - [bat](https://github.com/sharkdp/bat)
+- [fd](https://github.com/sharkdp/fd) (file listing for fzf, previews and tmux-sessionizer)
 - [zoxide](https://github.com/ajeetdsouza/zoxide?tab=readme-ov-file#installation)
 - [fzf](https://github.com/junegunn/fzf?tab=readme-ov-file#installation)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
@@ -33,7 +34,13 @@ Make sure you have these packages installed
 ```bash
 sudo apt install eza
 sudo apt install bat
+sudo apt install fd-find
 sudo apt install zoxide
+
+# Ubuntu installs bat and fd as batcat and fdfind; the config calls them bat and fd
+mkdir -p ~/.local/bin
+ln -s /usr/bin/batcat ~/.local/bin/bat
+ln -s /usr/bin/fdfind ~/.local/bin/fd
 
 # For fzf
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
@@ -78,7 +85,53 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Install all necessary plugins specified in .zshrc file
-# plugins=(git zsh-autosuggestions sudo web-search copyfile jsontools zsh-syntax-highlighting vi-mode fzf)
+# plugins=(git fzf-tab zsh-autosuggestions sudo web-search copyfile jsontools zsh-syntax-highlighting vi-mode)
+git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+```
+
+#### fzf
+
+fzf lists with `fd`, previews with `fzf-preview` (in `tools/`), and uses the Rosé Pine Moon theme (see Theme).
+It runs full screen with the prompt on the bottom line, the best match at the top, and the preview hidden until Ctrl-/.
+[fzf-tab](https://github.com/Aloxaf/fzf-tab) turns every Tab completion into an fzf list with previews.
+
+```
+Ctrl-T         insert file/dir paths
+Ctrl-R         search history (Ctrl-Y copy, Ctrl-/ full command)
+Alt-C          cd into a directory
+Tab            fzf-tab completion (< and > switch groups)
+cmd **<Tab>    fzf completion for paths, e.g. nvim **<Tab>, cd **<Tab>
+
+Inside any fzf list
+Ctrl-/         toggle preview          Ctrl-D/Ctrl-U   scroll preview
+Tab            mark item (multi)       Alt-A           mark all
+Ctrl-Y         copy selection to the clipboard
+
+inv            open file(s) in nvim
+rgf [query]    live ripgrep, opens the match in nvim at its line
+fkill [sig]    kill your processes
+fco            switch git branch (local or remote)
+fenv           browse environment variables
+zi             zoxide's interactive directory jump
+<Prefix>f      tmux-sessionizer: jump to a project's tmux session
+```
+
+#### Theme
+
+Everything uses [Rosé Pine](https://rosepinetheme.com/) Moon:
+
+- WezTerm: built-in `rose-pine-moon` color scheme
+- tmux: Rosé Pine colors set as catppuccin's `@thm_*` values at the top of `tmux.conf` (the catppuccin plugin only
+  provides the status bar layout)
+- Neovim: `rose-pine-moon` colorscheme and the `rose-pine` lualine theme
+- fzf: colors in `FZF_DEFAULT_OPTS` in `.zshrc`
+- bat (fzf previews and `cat`): `bat/.config/bat/themes/rose-pine-moon.tmTheme`, selected with `BAT_THEME`.
+  After stowing, build bat's theme cache once:
+
+```bash
+bat cache --build
 ```
 
 #### Wezterm
@@ -102,6 +155,7 @@ Copy / paste
 Ctrl+Shift+C   copy: the WezTerm selection (Shift+mouse drag), or else the tmux copy-mode / mouse selection
 Ctrl+Shift+V   paste from the system clipboard
 Ctrl+Shift+X   WezTerm's own copy mode (V to select, y to copy)
+Ctrl+Backspace delete the previous word (sends Ctrl+W)
 ```
 
 #### GNU Stow
@@ -178,6 +232,9 @@ To source your tmux config
 - Install [Neovim](https://github.com/neovim/neovim) from source
 
 Currently all the configurations are for Neovim `0.12`, including `nvim-treesitter`.
+
+[fzf-lua](https://github.com/ibhagwan/fzf-lua) is the only picker (telescope was removed): `ff` files, `fg` live grep,
+`fw` word under cursor, `fr` resume, `fb` all pickers, and `<C-b>` live grep.
 
 ##### `nvim-treesitter` on Neovim `0.12`
 

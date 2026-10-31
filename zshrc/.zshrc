@@ -26,7 +26,9 @@ HYPHEN_INSENSITIVE="true"
 
 # Which plugins would you like to load?
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions sudo web-search copyfile jsontools zsh-syntax-highlighting vi-mode fzf)
+# fzf-tab must come before plugins that wrap widgets (autosuggestions, syntax-highlighting)
+# fzf itself is set up by ~/.fzf.zsh at the bottom, so the omz fzf plugin isn't needed
+plugins=(git fzf-tab zsh-autosuggestions sudo web-search copyfile jsontools zsh-syntax-highlighting vi-mode)
 
 # Keep large pastes fast: skip suggestions/highlighting on huge command lines
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
@@ -55,20 +57,25 @@ fi
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
 
-# ZSH autocompletion
-autoload -Uz compinit
-compinit
-
+# ZSH autocompletion (compinit is already run by oh-my-zsh)
 bindkey -v
 zstyle ':completion:*' verbose yes
-zstyle ':completion:*:descriptions' format '%B%d%b'
-zstyle ':completion:*' menu select
+# fzf-tab: plain group headers, no zsh menu (fzf replaces it), ls colors in the list
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' menu no
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:git-checkout:*' sort false
 
-# Vim style movement in menu
-bindkey -M menuselect 'h' backward-char
-bindkey -M menuselect 'j' down-line-or-history
-bindkey -M menuselect 'k' up-line-or-history
-bindkey -M menuselect 'l' forward-char
+# fzf-tab: < and > switch between completion groups, previews per command
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:complete:(cd|z|__zoxide_z):*' fzf-preview 'eza --tree --level=1 --color=always --icons=always $realpath'
+zstyle ':fzf-tab:complete:(nvim|vim|bat|cat|less|eza|ls):*' fzf-preview 'fzf-preview $realpath'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview 'ps -p $word -o pid,user,%cpu,%mem,cmd --no-headers -ww'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
+zstyle ':fzf-tab:complete:git-(checkout|switch|log|diff):*' fzf-preview 'git log --oneline --graph --color=always -20 $word'
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
 
 # Aliases
 # Set personal Aliases, overriding those provided by Oh My Zsh libs,
@@ -81,12 +88,13 @@ eval "$(zoxide init zsh)"
 alias cd="z"
 alias zz="z -"
 # ---- bat (better cat) ----
-alias cat="bat --color=always --plain --wrap character -n"
+# theme lives in bat/.config/bat/themes; run `bat cache --build` after adding one
+export BAT_THEME="rose-pine-moon"
+# no --color=always: bat colors on screen but acts like plain cat in pipes and redirects
+alias cat="bat --plain --wrap character -n"
 # for nvim 
 alias vim="nvim"
 alias nv="nvim ."
-# for interactive neovim using fzf
-alias inv='nvim $(fzf)'
 # for lazydocker
 alias lzd='lazydocker'
 # for lazygit
@@ -216,20 +224,94 @@ export FUNCNEST=500
 # use fd instead of the default find
 # respect .gitignore
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
-export FZF_DEFAULT_OPTS='--style full --height 100% --layout=reverse --info=inline --border=rounded --margin=3% --color=dark --cycle --multi --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+# Minimal layout: no boxes, just a divider before the preview; Rosé Pine Moon colors (same as WezTerm, tmux, nvim)
+# full screen with the prompt on the bottom line, list reads top to bottom (best match first)
+# preview starts hidden (ctrl-/ shows it); it goes above the list on narrow terminals
+# ctrl-/ toggle preview, ctrl-d/ctrl-u scroll preview, alt-a select all, ctrl-y copy selection
+export FZF_DEFAULT_OPTS="
+  --height=100% --layout=reverse-list --style=minimal --border=none --info=inline-right
+  --cycle --multi --prompt='❯ ' --pointer='▶' --marker='✓' --gutter=' '
+  --preview-window='right,55%,border-left,hidden,<50(up,50%,border-bottom,hidden)'
+  --bind='ctrl-/:toggle-preview,ctrl-d:preview-half-page-down,ctrl-u:preview-half-page-up,alt-a:toggle-all'
+  --bind='ctrl-y:execute-silent(printf \"%s\n\" {+} | xclip -selection clipboard)'
+  --color='bg:#232136,bg+:#393552,fg:#908caa,fg+:#e0def4,hl:#ea9a97,hl+:#ea9a97,query:#e0def4'
+  --color='info:#9ccfd8,prompt:#f6c177,pointer:#c4a7e7,marker:#eb6f92,spinner:#f6c177'
+  --color='header:#3e8fb0,border:#44415a,label:#908caa,gutter:#232136,preview-bg:#232136'"
 export FZF_COMPLETION_TRIGGER='**'
-# fzf keybindings using ctrl+t
-# Preview file content using bat (https://github.com/sharkdp/bat)
-export FZF_CTRL_T_OPTS="
-  --walker-skip .git,node_modules,target,.yarn
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
-# preview cmd history using ctrl+r
-# CTRL-Y to copy the command into clipboard using pbcopy
+# ctrl+t: files and dirs, previewed by type (bat, eza tree, pdf text, ...)
+export FZF_CTRL_T_COMMAND='fd --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_CTRL_T_OPTS="--preview 'fzf-preview {}'"
+# alt+c: cd into a directory, previewed as a tree
+export FZF_ALT_C_COMMAND='fd --type d --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_ALT_C_OPTS="--no-multi --preview 'eza --tree --level=2 --color=always --icons=always {}'"
+# ctrl+r: command history; ctrl-/ shows the full command, ctrl-y copies it
 export FZF_CTRL_R_OPTS="
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
+  --preview 'echo {2..}' --preview-window='up,3,wrap,hidden'
+  --bind 'ctrl-y:execute-silent(echo -n {2..} | xclip -selection clipboard)+abort'
   --color header:italic
-  --header 'Press CTRL-Y to copy command into clipboard'"
+  --header 'CTRL-Y: copy command, CTRL-/: show full command'"
+
+# ** completion: list with fd instead of find
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude .git . "$1"
+}
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude .git . "$1"
+}
+# ** completion: previews per command
+_fzf_comprun() {
+  local command=$1
+  shift
+  case "$command" in
+    cd|z)         fzf --preview 'eza --tree --level=2 --color=always --icons=always {}' "$@" ;;
+    export|unset) fzf --preview "eval 'echo \${}'" "$@" ;;
+    *)            fzf --preview 'fzf-preview {}' "$@" ;;
+  esac
+}
+
+# ---- fzf helpers ----
+# inv: pick file(s) and open them in nvim
+inv() {
+  local files
+  files=("${(@f)$(fzf --preview 'fzf-preview {}')}") || return
+  nvim "${files[@]}"
+}
+
+# rgf [query]: live ripgrep, open the selected match in nvim at its line
+rgf() {
+  local rg="rg --column --line-number --no-heading --color=always --smart-case --hidden --glob '!.git'"
+  local sel file line
+  sel=$(fzf --ansi --disabled --no-multi --query "$*" --prompt 'rg ❯ ' --delimiter : \
+    --bind "start:reload:$rg {q} || true" \
+    --bind "change:reload:sleep 0.1; $rg {q} || true" \
+    --preview 'bat --color=always --style=numbers --highlight-line {2} {1}' \
+    --preview-window 'right,55%,border-left,+{2}/2,<50(up,50%,border-bottom,+{2}/2)') || return
+  IFS=: read -r file line _ <<< "$sel"
+  nvim "+$line" "$file"
+}
+
+# fkill [signal]: pick your processes (busiest first) and kill them, SIGTERM by default
+fkill() {
+  local pids
+  pids=$(ps -u "$USER" -o pid,ppid,%cpu,%mem,start,cmd --sort=-%cpu |
+    fzf --header-lines=1 --prompt 'kill ❯ ' --preview 'echo {}' --preview-window 'down,3,wrap' |
+    awk '{print $1}')
+  [[ -n $pids ]] && kill -"${1:-TERM}" ${(f)pids}
+}
+
+# fco: pick a local or remote git branch (most recent first) and switch to it
+fco() {
+  local branch
+  branch=$(git branch --all --sort=-committerdate --format='%(refname:short)' |
+    grep -v -e '^HEAD$' -e '/HEAD$' -e '^origin$' |
+    fzf --no-multi --prompt 'branch ❯ ' --preview 'git log --oneline --graph --color=always -30 {}') || return
+  git switch "${branch#origin/}"
+}
+
+# fenv: browse environment variables, prints the selected NAME=value lines
+fenv() {
+  env | sort | fzf --prompt 'env ❯ ' --preview 'echo {}' --preview-window 'down,5,wrap'
+}
 
 # For Node.js and NVM(Node version manager)
 export NVM_DIR="$HOME/.nvm"

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# fzf preview: directories as a tree, text with bat, PDFs/images/archives as a summary
+
+f="${1/#\~/$HOME}"
+
+if [ -d "$f" ]; then
+  eza --tree --level=2 --color=always --icons=always "$f" | head -200
+  exit 0
+fi
+
+if [ ! -f "$f" ]; then
+  echo "$1"
+  exit 0
+fi
+
+case "$(file --brief --mime-type "$f")" in
+  application/pdf)
+    pdftotext -l 2 -layout "$f" - 2>/dev/null | head -200
+    ;;
+  image/*)
+    identify "$f" 2>/dev/null || file --brief "$f"
+    ;;
+  application/zip | application/java-archive)
+    unzip -l "$f" | head -200
+    ;;
+  application/x-tar | application/gzip | application/x-xz | application/x-bzip2)
+    tar -tf "$f" 2>/dev/null | head -200
+    ;;
+  *)
+    if [ "$(file --brief --mime-encoding "$f")" = "binary" ]; then
+      file --brief "$f"
+    else
+      bat --color=always --style=numbers --line-range=:500 "$f"
+    fi
+    ;;
+esac

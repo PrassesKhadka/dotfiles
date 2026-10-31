@@ -128,7 +128,7 @@ vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Move to bottom window", silent 
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Move to top window", silent = true })
 
 vim.keymap.set("n", "<C-b>", function()
-	require("telescope.builtin").live_grep()
+	require("fzf-lua").live_grep()
 end, { desc = "find text", noremap = true, silent = true })
 
 -- window resize

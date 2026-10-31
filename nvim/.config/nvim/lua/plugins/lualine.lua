@@ -5,7 +5,7 @@ return {
         require('lualine').setup {
             options = {
                 icons_enabled = true,
-                theme = 'palenight',
+                theme = 'rose-pine', -- follows the rose-pine variant (moon)
                 component_separators = '|',
                 section_separators = '',
             },

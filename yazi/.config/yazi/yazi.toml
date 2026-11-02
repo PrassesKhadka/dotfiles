@@ -11,3 +11,7 @@ scrolloff      = 8
 
 [preview]
 wrap = "yes"
+# Images and PDF pages are rendered at most this many pixels and never scaled up, so the default 600x900
+# left them small in the pane; this fills it, maximized (T) too. Run `ya cache clear` after changing these
+max_width  = 2000
+max_height = 2800

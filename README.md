@@ -29,7 +29,7 @@ Make sure you have these packages installed
 - [nvm](https://github.com/nvm-sh/nvm)
 - [pyenv](https://github.com/pyenv/pyenv) 
 - [openjdk-21-jdk](https://openjdk.org/projects/jdk/21/)
-- xclip (tmux/WezTerm copy to the system clipboard), inotify-tools (tmux caps lock indicator)
+- xclip (tmux/WezTerm copy to the system clipboard)
 - ImageMagick and Ghostscript (images and PDFs in Neovim)
 
 ```bash
@@ -67,8 +67,8 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 # For Java
 sudo apt install openjdk-21-jdk
 
-# Clipboard, caps lock indicator, images/PDFs in Neovim
-sudo apt install xclip inotify-tools imagemagick ghostscript
+# Clipboard, images/PDFs in Neovim
+sudo apt install xclip imagemagick ghostscript
 ```
 
 #### Zsh

@@ -6,40 +6,31 @@ TMUX_BIN="${TMUX_BIN:-tmux}"
 exec 9>"${XDG_RUNTIME_DIR:-/tmp}/tmux-caps.lock"
 flock -n 9 || exit 0
 
-caps_file=""
-for f in /sys/class/leds/*::capslock/brightness; do
-  [ -r "$f" ] && caps_file="$f" && break
-done
+# The LED's sysfs file sends no inotify events, so poll it. Everything in the loop is a bash builtin
+# (glob, read, and read -t on a pipe nothing writes to as the sleep), so polling spawns no processes;
+# tmux is only called when the state changes, and then the bar is redrawn at once instead of at status-interval
+exec {sleep_fd}<> <(:)
 
-[ -n "$caps_file" ] || exit 0
+# exit with the tmux server, so the next server's copy can take the lock (tmux leaves its socket file behind)
+server_pid="$("$TMUX_BIN" display-message -p '#{pid}')" || exit 0
 
 last=""
 
-update() {
-  state=""
-  read -r state < "$caps_file" 2>/dev/null
-  if [ "$state" = "1" ]; then
-    text="🔒 CAPS"
-  else
-    text=""
+while [ -d "/proc/$server_pid" ]; do
+  state=0
+  # any keyboard: built-in and USB keyboards each have their own LED, and USB ones come and go
+  for f in /sys/class/leds/*::capslock/brightness; do
+    read -r b < "$f" 2>/dev/null && [ "$b" != "0" ] && state=1 && break
+  done
+
+  if [ "$state" != "$last" ]; then
+    [ "$state" = "1" ] && text="🔒 CAPS" || text=""
+    "$TMUX_BIN" set-option -gq @caps_indicator "$text" || exit 0
+    "$TMUX_BIN" list-clients -F '#{client_name}' | while read -r c; do
+      "$TMUX_BIN" refresh-client -S -t "$c"
+    done
+    last="$state"
   fi
 
-  if [ "$text" != "$last" ]; then
-    "$TMUX_BIN" set-option -gq @caps_indicator "$text"
-    last="$text"
-  fi
-}
-
-update
-
-if command -v inotifywait >/dev/null 2>&1; then
-  while inotifywait -qq -e modify "$caps_file"; do
-    update
-  done
-else
-  # polling fallback; install inotify-tools to avoid it
-  while :; do
-    update
-    sleep 0.3
-  done
-fi
+  read -rt 0.15 -u "$sleep_fd"
+done

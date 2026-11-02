@@ -1,0 +1,16 @@
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+# Added on top of yazi's default keymap (press ~ or F1 inside yazi to list every binding)
+
+[mgr]
+prepend_keymap = [
+	# Goto: same places tmux-sessionizer looks in
+	{ on = [ "g", "p" ], run = "cd ~/Desktop/code", desc = "Go to ~/Desktop/code" },
+	{ on = [ "g", "." ], run = "cd ~/dotfiles",     desc = "Go to ~/dotfiles" },
+
+	# Preview: fill the screen (J/K still flip PDF pages); needs `ya pkg install` for the toggle-pane plugin
+	{ on = "T", run = "plugin toggle-pane max-preview", desc = "Maximize or restore the preview pane" },
+
+	# Tools
+	{ on = [ "g", "i" ], run = "shell --block -- lazygit", desc = "Open lazygit here" },
+	{ on = "!",          run = 'shell --block -- "$SHELL"', desc = "Open a shell here (exit to return)" },
+]

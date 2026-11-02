@@ -1,0 +1,13 @@
+#:schema https://yazi-rs.github.io/schemas/yazi.json
+# Only the settings that differ from yazi's defaults; see `yazi-config/preset/yazi-default.toml` upstream
+
+[mgr]
+# parent : current : preview
+ratio          = [ 1, 3, 4 ]
+sort_by        = "natural"
+show_hidden    = true
+linemode       = "size"
+scrolloff      = 8
+
+[preview]
+wrap = "yes"

@@ -92,6 +92,16 @@ alias zz="z -"
 export BAT_THEME="ansi"
 # no --color=always: bat colors on screen but acts like plain cat in pipes and redirects
 alias cat="bat --plain --wrap character -n"
+# ---- yazi (file manager) ----
+# y [dir]: open yazi, and cd to the directory it was in when you quit with q (Q quits without cd)
+y() {
+  local tmp cwd
+  tmp="$(mktemp -t yazi-cwd.XXXXXX)"
+  yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd < "$tmp"
+  [[ -n $cwd && $cwd != $PWD ]] && builtin cd -- "$cwd"
+  rm -f -- "$tmp"
+}
 # for nvim 
 alias vim="nvim"
 alias nv="nvim ."

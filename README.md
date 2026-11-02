@@ -25,6 +25,7 @@ Make sure you have these packages installed
 - [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 - [lazygit](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#installation)
 - [lazydocker](https://github.com/jesseduffield/lazydocker) 
+- [yazi](https://github.com/sxyazi/yazi) (terminal file manager, see the Yazi section)
 - [nvm](https://github.com/nvm-sh/nvm)
 - [pyenv](https://github.com/pyenv/pyenv) 
 - [openjdk-21-jdk](https://openjdk.org/projects/jdk/21/)
@@ -118,6 +119,46 @@ zi             zoxide's interactive directory jump
 <Prefix>f      tmux-sessionizer: jump to a project's tmux session
 ```
 
+#### Yazi
+
+[yazi](https://github.com/sxyazi/yazi) is the terminal file manager. Its config in `yazi/.config/yazi` only holds what
+differs from the defaults: hidden files shown, natural sort, sizes next to names, the Batman theme, and a few keys.
+The prebuilt musl binary works on Ubuntu 22.04:
+
+```bash
+YAZI_VERSION=$(curl -s "https://api.github.com/repos/sxyazi/yazi/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+curl -Lo yazi.zip "https://github.com/sxyazi/yazi/releases/download/v${YAZI_VERSION}/yazi-x86_64-unknown-linux-musl.zip"
+unzip -q yazi.zip
+install -m 755 yazi-x86_64-unknown-linux-musl/{yazi,ya} ~/.local/bin/
+```
+
+Previews use tools that are already listed above (`fd`, `rg`, `fzf`, `zoxide`, ImageMagick) plus `file`, `ffmpeg`,
+`7z`, `jq` and `poppler-utils`; `resvg` adds SVG previews. Images show in WezTerm, also inside tmux (`allow-passthrough`).
+
+```bash
+sudo apt install file ffmpeg p7zip-full jq poppler-utils
+```
+
+Plugins are pinned in `package.toml` and installed into `plugins/` (not tracked). Install them after stowing:
+
+```bash
+ya pkg install
+```
+
+```
+y [dir]        open yazi; quitting with q cds the shell to where you were (Q doesn't)
+~ or F1        all key bindings
+h/j/k/l        move, Enter/o open (nvim for text), O open with...
+Space          select, v visual select, y/x yank/cut, p paste, d trash, a create, r rename
+J / K          scroll the preview; on a PDF, next / previous page
+T              maximize or restore the preview pane (read PDFs and images full screen)
+s / S          search names (fd) / contents (rg)
+z / Z          jump with fzf / zoxide
+gp / g.        go to ~/Desktop/code / ~/dotfiles
+gi             lazygit in the current directory
+!              a shell in the current directory (exit to go back)
+```
+
 #### Theme
 
 Everything except Neovim uses WezTerm's built-in **Batman** scheme: a near-black background, greys and yellow. There's no red or
@@ -130,6 +171,7 @@ green, so alerts use bright yellow (e.g. the tmux prefix and bell, low battery).
   transparent background) with lualine's `auto` theme. `:colorscheme batman` switches to `colors/batman.lua`, which
   matches the rest of the setup (errors bright yellow, warnings gold, info/hints grey)
 - fzf: colors in `FZF_DEFAULT_OPTS` in `.zshrc`
+- yazi: `yazi/.config/yazi/theme.toml`
 - bat (fzf previews and `cat`): the built-in `ansi` theme, which uses the terminal's colors, so it follows WezTerm
 
 The previous Rosé Pine Moon setup is still available: `rose-pine` is installed in Neovim, its bat theme is in

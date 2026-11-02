@@ -1,0 +1,106 @@
+#:schema https://yazi-rs.github.io/schemas/theme.json
+# Batman palette (same as WezTerm, tmux and fzf): greys and yellow, no red or green
+
+[mgr]
+cwd = { fg = "#e6dc44" }
+
+find_keyword  = { fg = "#fcef0c", bold = true, underline = true }
+find_position = { fg = "#fff78e", bg = "reset", bold = true }
+
+marker_copied   = { fg = "#a3a3a6", bg = "#a3a3a6" }
+marker_cut      = { fg = "#fcef0c", bg = "#fcef0c" }
+marker_marked   = { fg = "#fff78e", bg = "#fff78e" }
+marker_selected = { fg = "#e6dc44", bg = "#e6dc44" }
+
+count_copied   = { fg = "#1b1d1e", bg = "#a3a3a6" }
+count_cut      = { fg = "#1b1d1e", bg = "#fcef0c" }
+count_selected = { fg = "#1b1d1e", bg = "#e6dc44" }
+
+border_style = { fg = "#505354" }
+
+[tabs]
+active   = { fg = "#1b1d1e", bg = "#e6dc44", bold = true }
+inactive = { fg = "#a3a3a6", bg = "#4d504c" }
+
+[mode]
+normal_main = { fg = "#1b1d1e", bg = "#e6dc44", bold = true }
+normal_alt  = { fg = "#e6dc44", bg = "#4d504c" }
+select_main = { fg = "#1b1d1e", bg = "#fcef0c", bold = true }
+select_alt  = { fg = "#fcef0c", bg = "#4d504c" }
+unset_main  = { fg = "#1b1d1e", bg = "#fff78e", bold = true }
+unset_alt   = { fg = "#fff78e", bg = "#4d504c" }
+
+[indicator]
+parent  = { fg = "#dadbd6", bg = "#4d504c" }
+current = { fg = "#dadbd6", bg = "#4d504c", bold = true }
+preview = { underline = true }
+
+[status]
+perm_sep   = { fg = "#505354" }
+perm_type  = { fg = "#e6dc44" }
+perm_read  = { fg = "#dadbd6" }
+perm_write = { fg = "#fff78e" }
+perm_exec  = { fg = "#a3a3a6" }
+
+progress_label  = { fg = "#dadbd6", bold = true }
+progress_normal = { fg = "#e6dc44", bg = "#262829" }
+progress_error  = { fg = "#1b1d1e", bg = "#fcef0c" }
+
+[which]
+border    = { fg = "#505354" }
+cand      = { fg = "#e6dc44" }
+rest      = { fg = "#737174" }
+desc      = { fg = "#a3a3a6" }
+separator_style = { fg = "#505354" }
+
+[confirm]
+border = { fg = "#e6dc44" }
+title  = { fg = "#e6dc44" }
+
+[spot]
+border   = { fg = "#505354" }
+title    = { fg = "#e6dc44" }
+tbl_col  = { fg = "#e6dc44" }
+tbl_cell = { fg = "#1b1d1e", bg = "#e6dc44" }
+
+[notify]
+title_info  = { fg = "#a3a3a6" }
+title_warn  = { fg = "#e6dc44" }
+title_error = { fg = "#fcef0c", bold = true }
+
+[pick]
+border = { fg = "#505354" }
+active = { fg = "#e6dc44", bold = true }
+
+[input]
+border = { fg = "#505354" }
+
+[cmp]
+border = { fg = "#505354" }
+
+[tasks]
+border  = { fg = "#505354" }
+hovered = { fg = "#e6dc44", bold = true }
+
+[help]
+border  = { fg = "#505354" }
+chord   = { fg = "#e6dc44" }
+hovered = { fg = "#dadbd6", bg = "#4d504c", bold = true }
+
+[filetype]
+rules = [
+	# Image / media / archive / document
+	{ mime = "**/image/*", fg = "#fff78e" },
+	{ mime = "**/{audio,video}/*", fg = "#c8be46" },
+	{ mime = "**/application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#919495", italic = true },
+	{ mime = "**/application/{pdf,doc,rtf}", fg = "#dadbd6", italic = true },
+	{ mime = "vfs/{absent,stale}", fg = "#737174" },
+	# Special files
+	{ url = "*", is = "orphan", fg = "#1b1d1e", bg = "#fcef0c" },
+	{ url = "*", is = "exec", fg = "#e6dc44" },
+	{ url = "*", is = "dummy", fg = "#1b1d1e", bg = "#fcef0c" },
+	{ url = "*/", is = "dummy", fg = "#1b1d1e", bg = "#fcef0c" },
+	# Fallback: directories, then everything else
+	{ url = "*/", fg = "#dadbd6", bold = true },
+	{ url = "*", fg = "#a3a3a6" },
+]

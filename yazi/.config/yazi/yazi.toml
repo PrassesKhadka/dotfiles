@@ -15,3 +15,9 @@ wrap = "yes"
 # left them small in the pane; this fills it, maximized (T) too. Run `ya cache clear` after changing these
 max_width  = 2000
 max_height = 2800
+
+[plugin]
+# PDFs: built-in preview plus a "page / total" counter (plugins/pdf-page.yazi)
+prepend_previewers = [
+	{ mime = "application/pdf", run = "pdf-page" },
+]

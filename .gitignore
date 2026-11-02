@@ -1,2 +1,4 @@
 .tmux
-yazi/.config/yazi/plugins
+# installed by ya pkg (package.toml); local plugins are tracked
+yazi/.config/yazi/plugins/*
+!yazi/.config/yazi/plugins/pdf-page.yazi/

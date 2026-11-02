@@ -150,7 +150,7 @@ y [dir]        open yazi; quitting with q cds the shell to where you were (Q doe
 ~ or F1        all key bindings
 h/j/k/l        move, Enter/o open (nvim for text), O open with...
 Space          select, v visual select, y/x yank/cut, p paste, d trash, a create, r rename
-J / K          scroll the preview; on a PDF, next / previous page
+J / K          scroll the preview; on a PDF, next / previous page (page / total shows under it)
 T              maximize or restore the preview pane (read PDFs and images full screen)
 s / S          search names (fd) / contents (rg)
 z / Z          jump with fzf / zoxide

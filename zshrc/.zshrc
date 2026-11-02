@@ -327,9 +327,23 @@ fenv() {
 }
 
 # For Node.js and NVM(Node version manager)
+# Loading nvm.sh took ~250ms of every shell start, so only the default node goes on PATH here
+# (newest installed version matching ~/.nvm/alias/default, e.g. "20"); nvm itself loads on first use
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+_nvm_load() {
+  unfunction nvm _nvm_load
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+nvm() { _nvm_load && nvm "$@" }
+() {
+  local alias_file=$NVM_DIR/alias/default
+  [[ -r $alias_file ]] || return
+  local want=$(<$alias_file)
+  local -a dirs=($NVM_DIR/versions/node/v${want#v}(N/nOn[1]) $NVM_DIR/versions/node/v${want#v}.*(N/nOn[1]))
+  # aliases like lts/* or node can't be resolved without nvm: load it now
+  (( $#dirs )) && export PATH="$dirs[1]/bin:$PATH" || _nvm_load
+}
 
 # For PYTHON
 # >>> conda initialize >>>
@@ -350,10 +364,14 @@ export NVM_DIR="$HOME/.nvm"
 # <<< conda initialize <<<
 
 # Pyenv configuration
+# The shims are enough to run the selected python; `pyenv init -` (a subprocess on every start) runs on first use of pyenv
 export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
+export PATH="$PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH"
+pyenv() {
+  unfunction pyenv
+  eval "$(command pyenv init - zsh)"
+  pyenv "$@"
+}
 
 # For JAVA
 # Adding JAVA_HOME Environment Variables manually
@@ -363,9 +381,20 @@ export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="$JAVA_FX/lib:$PATH"
 export DATABASE_PASSWORD=""
 # SDKMAN,which manages Java-related SDKs (e.g., Gradle, Maven, Kotlin, etc.)
-# THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+# Its installed tools go on PATH (with GRADLE_HOME etc.) like sdkman-init.sh does; the sdk command loads on first use
 export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+() {
+  local c
+  for c in $SDKMAN_DIR/candidates/*/current(N); do
+    export PATH="$c/bin:$PATH"
+    export "${(U)${c:h:t}}_HOME"="$c"
+  done
+}
+sdk() {
+  unfunction sdk
+  [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+  sdk "$@"
+}
 
 # Set up fzf key bindings and fuzzy completion
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

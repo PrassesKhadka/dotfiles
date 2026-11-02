@@ -26,7 +26,8 @@ config.colors = { foreground = "#c6c5bf" }
 
 -- Font settings
 config.font = wezterm.font_with_fallback({})
-config.font_size = 12
+-- 12 zoomed in four times with Ctrl+= (each step is x1.1), about 17.6; Ctrl+0 resets to this
+config.font_size = 12 * 1.1 ^ 4
 
 -- scrollbar setup
 config.enable_scroll_bar = true -- show scrollbar

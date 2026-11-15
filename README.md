@@ -255,6 +255,8 @@ Notes
 
 - Scrollback is kept by tmux (`history-limit 50000`), not WezTerm
 - Copy mode: `<Prefix>v` (or `<Prefix>[`), `v` to select, `y`/`Enter` to copy to the clipboard. Mouse drags copy on release.
+- Status bar, left: session, current directory with its git branch (`*` when tracked files have uncommitted changes,
+  checked in the background every few seconds, `git-branch.sh`), then 🔒 CAPS while Caps Lock is on
 
 Setup [tpm](https://github.com/tmux-plugins/tpm)
 

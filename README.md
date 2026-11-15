@@ -216,6 +216,24 @@ Shift+click    on file:line (e.g. src/main.rs:42:5 in compiler, rg or test outpu
 Ctrl+Shift+Space  quick select: type the hint letters to copy a path, file:line, URL, hash or number
 ```
 
+#### Keyboard
+
+Caps Lock is Esc when tapped and Ctrl when held, on every keyboard, using [keyd](https://github.com/rvaiya/keyd)
+(`keyd/.config/keyd/default.conf`). Shift+Caps Lock is still a real Caps Lock, so the tmux indicator keeps working.
+keyd isn't packaged for Ubuntu 22.04; build a release tag and install the config. Copy it rather than symlinking:
+keyd runs as root and its config can run commands, so it shouldn't be editable without sudo.
+
+```bash
+sudo apt install build-essential git
+git clone --branch v2.6.0 --depth 1 https://github.com/rvaiya/keyd /tmp/keyd
+make -C /tmp/keyd && sudo make -C /tmp/keyd install
+sudo install -Dm 644 ~/dotfiles/keyd/.config/keyd/default.conf /etc/keyd/default.conf
+sudo systemctl enable --now keyd
+```
+
+After changing the config, copy it again and run `sudo keyd reload`. If a key ever gets stuck, Backspace+Esc+Enter
+pressed together kills keyd.
+
 #### GNU Stow
 
 I use GNU stow to symlink my dotfiles

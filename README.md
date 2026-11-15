@@ -207,6 +207,15 @@ Ctrl+Shift+X   WezTerm's own copy mode (V to select, y to copy)
 Ctrl+Backspace delete the previous word (sends Ctrl+W)
 ```
 
+Links
+
+```
+Shift+click    on file:line (e.g. src/main.rs:42:5 in compiler, rg or test output): nvim at that line in a new tmux
+               window, relative to the active tmux pane's directory; URLs open in the browser
+               (Shift because tmux has the mouse; a plain click works outside tmux)
+Ctrl+Shift+Space  quick select: type the hint letters to copy a path, file:line, URL, hash or number
+```
+
 #### GNU Stow
 
 I use GNU stow to symlink my dotfiles

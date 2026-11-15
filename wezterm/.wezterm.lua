@@ -79,6 +79,31 @@ config.keys = {
 	{ key = "Backspace", mods = "CTRL", action = act.SendString("\x17") },
 }
 
+-- file:line links (compiler errors, rg, stack traces), e.g. src/main.rs:42:5 or ~/dotfiles/zshrc/.zshrc:331
+-- Shift+click opens nvim at that line in a new tmux window (Shift because tmux has the mouse; a plain click works
+-- outside tmux). Relative paths resolve against the active tmux pane's directory. Other links open as usual.
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+table.insert(config.hyperlink_rules, {
+	regex = [==[(?:^|[\s'"(\[=])(((?:~|\.{1,2})?[\w./-]*(?:[\w-]\.\w+|/\.\w+)):(\d+)(?::\d+)?)\b]==],
+	format = "nvim-open:$2:$3",
+	highlight = 1,
+})
+
+wezterm.on("open-uri", function(window, pane, uri)
+	local file, line = uri:match("^nvim%-open:(.+):(%d+)$")
+	if not file then
+		return
+	end
+	local ok, dir = wezterm.run_child_process({ tmux, "display-message", "-p", "#{pane_current_path}" })
+	dir = ok and dir:gsub("%s+$", "") or wezterm.home_dir
+	file = file:gsub("^~", wezterm.home_dir)
+	wezterm.run_child_process({ tmux, "new-window", "-c", dir, "nvim", "+" .. line, "--", file })
+	return false
+end)
+
+-- Quick select (ctrl+shift+space): also pick file:line, on top of the defaults (paths, URLs, hashes, numbers)
+config.quick_select_patterns = { [==[[\w./~-]*[\w-]\.\w+:\d+(?::\d+)?]==] }
+
 -- Tab bar settings
 config.enable_tab_bar = false
 

@@ -157,6 +157,9 @@ z / Z          jump with fzf / zoxide
 gp / g.        go to ~/Desktop/code / ~/dotfiles
 gi             lazygit in the current directory
 !              a shell in the current directory (exit to go back)
+
+<Prefix>C-y    yazi in a tmux popup; files you open go to nvim in a new tmux window
+<leader>-      in nvim (yazi.nvim): yazi at the current file; <leader>_ at nvim's cwd, <leader>yr resume
 ```
 
 The file list shows git status next to each name ([git.yazi](https://github.com/yazi-rs/plugins/tree/main/git.yazi)):

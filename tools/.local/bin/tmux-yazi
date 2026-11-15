@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# yazi for a tmux popup (<Prefix>C-y): files opened with Enter/o go to nvim in a new tmux window,
+# next to the pane you came from, instead of inside the popup
+# Usage: tmux-yazi [dir]
+
+chooser="$(mktemp -t tmux-yazi.XXXXXX)"
+trap 'rm -f -- "$chooser"' EXIT
+
+yazi --chooser-file="$chooser" "$@"
+
+mapfile -t files < "$chooser"
+[ ${#files[@]} -eq 0 ] && exit 0
+
+tmux new-window -c "$(dirname -- "${files[0]}")" "${EDITOR:-nvim}" -- "${files[@]}"

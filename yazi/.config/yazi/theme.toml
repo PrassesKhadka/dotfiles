@@ -87,6 +87,23 @@ border  = { fg = "#505354" }
 chord   = { fg = "#e6dc44" }
 hovered = { fg = "#dadbd6", bg = "#4d504c", bold = true }
 
+[git]
+# signs from git.yazi: yellow = changes to commit, grey = ignored
+unstaged  = { fg = "#e6dc44" }
+untracked = { fg = "#fff78e" }
+staged    = { fg = "#c8be46" }
+added     = { fg = "#c8be46" }
+updated   = { fg = "#e6dc44" }
+deleted   = { fg = "#fcef0c", bold = true }
+ignored   = { fg = "#505354" }
+unstaged_sign  = "M"
+untracked_sign = "?"
+staged_sign    = "S"
+added_sign     = "A"
+updated_sign   = "U"
+deleted_sign   = "D"
+ignored_sign   = "!"
+
 [filetype]
 rules = [
 	# Image / media / archive / document

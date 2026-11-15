@@ -21,3 +21,8 @@ max_height = 2800
 prepend_previewers = [
 	{ mime = "application/pdf", run = "pdf-page" },
 ]
+# git status of files and folders (git.yazi, set up in init.lua)
+prepend_fetchers = [
+	{ url = "*",  run = "git", group = "git" },
+	{ url = "*/", run = "git", group = "git" },
+]

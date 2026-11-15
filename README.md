@@ -159,6 +159,9 @@ gi             lazygit in the current directory
 !              a shell in the current directory (exit to go back)
 ```
 
+The file list shows git status next to each name ([git.yazi](https://github.com/yazi-rs/plugins/tree/main/git.yazi)):
+`M` modified, `?` untracked, `S`/`A` staged, `D` deleted, `!` ignored (grey). Folders show the status of what's inside.
+
 #### Theme
 
 Everything except Neovim uses WezTerm's built-in **Batman** scheme: a near-black background, greys and yellow. There's no red or

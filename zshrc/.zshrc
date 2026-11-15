@@ -379,7 +379,6 @@ export JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64
 export JAVA_FX=/usr/lib/javafx-sdk-23.0.2
 export PATH="$JAVA_HOME/bin:$PATH"
 export PATH="$JAVA_FX/lib:$PATH"
-export DATABASE_PASSWORD=""
 # SDKMAN,which manages Java-related SDKs (e.g., Gradle, Maven, Kotlin, etc.)
 # Its installed tools go on PATH (with GRADLE_HOME etc.) like sdkman-init.sh does; the sdk command loads on first use
 export SDKMAN_DIR="$HOME/.sdkman"

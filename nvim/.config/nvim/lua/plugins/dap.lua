@@ -10,18 +10,19 @@ return {
         config = function()
             -- Optional: Configure basic keybindings here if needed
             local dap = require("dap")
+            -- adapters installed by mason (see mason-nvim-dap below), wherever nvim's data directory is
+            local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
             dap.adapters.cppdbg = {
                 id = 'cppdbg',
                 type = 'executable',
-                command =
-                '/home/zkrallah/.local/share/nvim/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+                command = mason_bin .. '/OpenDebugAD7',
             }
 
             dap.adapters.codelldb = {
                 type = 'server',
                 port = "${port}",
                 executable = {
-                    command = '/home/zkrallah/.local/share/nvim/mason/bin/codelldb', -- Path to lldb-vscode
+                    command = mason_bin .. '/codelldb',
                     args = { "--port", "${port}" },
                 },
                 name = "lldb"
